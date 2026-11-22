@@ -39,7 +39,7 @@
     .reveal {
       opacity: 0;
       transform: translateY(34px) scale(0.985);
-      filter: blur(3px);
+      
       transition:
         opacity 1.15s cubic-bezier(0.22, 1, 0.36, 1),
         transform 1.25s cubic-bezier(0.22, 1, 0.36, 1),
@@ -49,7 +49,7 @@
     .reveal.visible {
       opacity: 1;
       transform: translateY(0) scale(1);
-      filter: blur(0);
+      
     }
 
     /* Gerakan hidup berkelanjutan (ambient motion) untuk foto, kartu, dan elemen dekoratif */
@@ -110,23 +110,26 @@
       will-change: transform, opacity;
     }
 
-    /* Elemen gambar & tulisan muncul & memudar lembut saat masuk/keluar area pandang */
+    /* Elemen gambar & tulisan muncul & memudar lembut, tajam (tanpa blur) */
     .fade-item {
-      opacity: 0.04;
-      transform: translateY(18px);
+      opacity: 0.08;
+      transform: translateY(14px);
+      filter: none !important;
       transition:
-        opacity 1.2s cubic-bezier(0.22, 1, 0.36, 1),
-        transform 1.3s cubic-bezier(0.22, 1, 0.36, 1);
+        opacity 1.45s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 1.55s cubic-bezier(0.22, 1, 0.36, 1);
       will-change: opacity, transform;
     }
     .fade-item.in-view {
       opacity: 1;
       transform: translateY(0);
+      filter: none !important;
     }
 
     .reveal {
-      opacity: 1;
-      transform: none;
+      opacity: 1 !important;
+      transform: none !important;
+      filter: none !important;
     }
 
     #autoScrollPill {
@@ -148,7 +151,7 @@
       opacity: 0;
       transition: opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1);
       background: radial-gradient(circle at center, rgba(255,255,255,0.22), rgba(0,0,0,0.28));
-      backdrop-filter: blur(2px);
+      
     }
     #slideTransitionCurtain.active {
       opacity: 1;
@@ -981,12 +984,13 @@
             e.target.classList.remove('in-view');
           }
         });
-      }, { threshold: 0.12, rootMargin: '0px 0px -24px 0px' });
+      }, { threshold: 0.06, rootMargin: '0px 0px -10px 0px' });
 
       const items = document.querySelectorAll('.fade-item');
       items.forEach(el => {
+        el.style.filter = 'none';
         const r = el.getBoundingClientRect();
-        if (r.top < window.innerHeight && r.bottom > 0) {
+        if (r.top < window.innerHeight * 0.95 && r.bottom > 0) {
           el.classList.add('in-view');
         }
         obs.observe(el);
