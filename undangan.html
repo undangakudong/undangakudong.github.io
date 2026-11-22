@@ -18,13 +18,13 @@
       50% { transform: scale(1.1); }
       100% { transform: scale(1); }
     }
-    .anim-kenburns { animation: kenBurns 18s ease-in-out infinite; }
+    .motion-photo { animation: kenBurns 18s ease-in-out infinite; }
 
     @keyframes floatSlow {
       0%, 100% { transform: translateY(0px); }
       50% { transform: translateY(-8px); }
     }
-    .anim-float { animation: floatSlow 4.5s ease-in-out infinite; }
+    .motion-element { animation: floatSlow 4.5s ease-in-out infinite; }
 
     @keyframes spinSlow {
       from { transform: rotate(0deg); }
@@ -33,8 +33,67 @@
     .spin-disc { animation: spinSlow 8s linear infinite; }
     .paused-disc { animation-play-state: paused; }
 
-    .reveal { opacity: 0; transform: translateY(28px); transition: all 0.85s cubic-bezier(0.16, 1, 0.3, 1); }
-    .reveal.visible { opacity: 1; transform: translateY(0); }
+    html { scroll-behavior: smooth; }
+
+    /* Animasi masuk section yang halus & berkelas */
+    .reveal {
+      opacity: 0;
+      transform: translateY(34px) scale(0.985);
+      filter: blur(3px);
+      transition:
+        opacity 1.15s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 1.25s cubic-bezier(0.22, 1, 0.36, 1),
+        filter 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: opacity, transform, filter;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      filter: blur(0);
+    }
+
+    /* Gerakan hidup berkelanjutan (ambient motion) untuk foto, kartu, dan elemen dekoratif */
+    @keyframes gentleBreathe {
+      0%, 100% { transform: scale(1) translate3d(0, 0, 0); }
+      50% { transform: scale(1.045) translate3d(0, -4px, 0); }
+    }
+    .motion-photo {
+      animation: gentleBreathe 12s ease-in-out infinite;
+      will-change: transform;
+    }
+
+    @keyframes swayDrift {
+      0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); }
+      50% { transform: translate3d(0, -6px, 0) rotate(0.7deg); }
+    }
+    .motion-element {
+      animation: swayDrift 7.5s ease-in-out infinite;
+      will-change: transform;
+    }
+
+    @keyframes shimmerGlow {
+      0%, 100% { box-shadow: 0 10px 25px -8px rgba(0, 0, 0, 0.14); }
+      50% { box-shadow: 0 18px 34px -8px rgba(180, 138, 78, 0.28); }
+    }
+    .motion-card {
+      animation: shimmerGlow 8s ease-in-out infinite;
+      transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.65s ease;
+    }
+    .motion-card:hover {
+      transform: translateY(-4px) scale(1.01);
+    }
+
+    /* Overlay transisi halus saat navigasi antar bagian/slide */
+    #slideTransitionCurtain {
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+      background: radial-gradient(circle at center, rgba(255,255,255,0.22), rgba(0,0,0,0.28));
+      backdrop-filter: blur(2px);
+    }
+    #slideTransitionCurtain.active {
+      opacity: 1;
+    }
 
     /* Pola Batik Halus untuk Tema Adat */
     .batik-pattern {
@@ -56,7 +115,7 @@
     
     <!-- LEFT DESKTOP SHOWCASE -->
     <aside class="hidden lg:flex lg:w-7/12 sticky top-0 h-screen relative overflow-hidden flex-col justify-end p-12 text-white">
-      <img id="desktopBgImg" src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1400&q=90" class="absolute inset-0 w-full h-full object-cover anim-kenburns" alt="Prewedding">
+      <img id="desktopBgImg" src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1400&q=90" class="absolute inset-0 w-full h-full object-cover motion-photo" alt="Prewedding">
       <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-black/15"></div>
       <div class="relative z-10 space-y-3 max-w-lg">
         <span id="deskBadge" class="inline-block px-3.5 py-1 rounded-full bg-white/15 backdrop-blur border border-white/25 text-[11px] uppercase tracking-[0.25em]">
@@ -72,6 +131,7 @@
 
     <!-- RIGHT / MOBILE DYNAMIC STREAM (DI-RENDER SESUAI ARSITEKTUR TEMA) -->
     <main id="invitationStream" class="w-full lg:w-5/12 max-w-[480px] min-h-screen relative pb-28 shadow-2xl overflow-hidden">
+      <div id="slideTransitionCurtain" class="fixed inset-0 lg:left-auto lg:w-5/12 lg:max-w-[480px] z-30"></div>
       <div id="dynamicLayoutRoot"></div>
 
       <!-- FLOATING AUDIO BUTTON -->
@@ -81,12 +141,12 @@
 
       <!-- FLOATING BOTTOM NAV -->
       <nav class="fixed bottom-3 left-1/2 -translate-x-1/2 lg:left-auto lg:translate-x-0 lg:right-[calc(50%-36rem+24px)] z-40 w-[92%] max-w-[420px] bg-white/95 backdrop-blur-md border border-black/10 rounded-full px-3 py-2 shadow-xl flex items-center justify-around text-[10px] font-bold text-slate-700">
-        <a href="#sec-home" class="flex flex-col items-center gap-0.5 hover:text-amber-600 transition"><span>🏠</span>Sampul</a>
-        <a href="#sec-mempelai" class="flex flex-col items-center gap-0.5 hover:text-amber-600 transition"><span>💑</span>Mempelai</a>
-        <a href="#sec-acara" class="flex flex-col items-center gap-0.5 hover:text-amber-600 transition"><span>📅</span>Acara</a>
-        <a href="#sec-galeri" class="flex flex-col items-center gap-0.5 hover:text-amber-600 transition"><span>🖼️</span>Galeri</a>
-        <a href="#sec-gift" class="flex flex-col items-center gap-0.5 hover:text-amber-600 transition"><span>🎁</span>Kado</a>
-        <a href="#sec-ucapan" class="flex flex-col items-center gap-0.5 hover:text-amber-600 transition"><span>💬</span>Ucapan</a>
+        <a href="#sec-home" onclick="smoothGlideTo('sec-home', event)" class="flex flex-col items-center gap-0.5 hover:text-amber-600 transition duration-300"><span>🏠</span>Sampul</a>
+        <a href="#sec-mempelai" onclick="smoothGlideTo('sec-mempelai', event)" class="flex flex-col items-center gap-0.5 hover:text-amber-600 transition duration-300"><span>💑</span>Mempelai</a>
+        <a href="#sec-acara" onclick="smoothGlideTo('sec-acara', event)" class="flex flex-col items-center gap-0.5 hover:text-amber-600 transition duration-300"><span>📅</span>Acara</a>
+        <a href="#sec-galeri" onclick="smoothGlideTo('sec-galeri', event)" class="flex flex-col items-center gap-0.5 hover:text-amber-600 transition duration-300"><span>🖼️</span>Galeri</a>
+        <a href="#sec-gift" onclick="smoothGlideTo('sec-gift', event)" class="flex flex-col items-center gap-0.5 hover:text-amber-600 transition duration-300"><span>🎁</span>Kado</a>
+        <a href="#sec-ucapan" onclick="smoothGlideTo('sec-ucapan', event)" class="flex flex-col items-center gap-0.5 hover:text-amber-600 transition duration-300"><span>💬</span>Ucapan</a>
       </nav>
     </main>
   </div>
@@ -184,7 +244,7 @@
       // SAMPUL MAJALAH VOGUE FULL-BLEED
       coverSlot.innerHTML = `
         <div class="w-full h-full relative flex flex-col justify-between p-8 text-white">
-          <img src="${data.coverPhoto || "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=900&q=85"}" class="absolute inset-0 w-full h-full object-cover anim-kenburns ${t.id.includes('monochrome') ? 'grayscale' : ''}" alt="Editorial">
+          <img src="${data.coverPhoto || "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=900&q=85"}" class="absolute inset-0 w-full h-full object-cover motion-photo ${t.id.includes('monochrome') ? 'grayscale' : ''}" alt="Editorial">
           <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/30 to-black/40"></div>
           
           <div class="relative z-10 flex justify-between items-center border-b border-white/30 pb-3 text-[10px] tracking-[0.3em] uppercase">
@@ -221,7 +281,7 @@
           </div>
 
           <!-- Polaroid Card Miring -->
-          <div class="relative bg-white p-3.5 pb-8 shadow-2xl border border-stone-200 -rotate-3 w-64">
+          <div class="relative bg-white p-3.5 pb-8 shadow-2xl border border-stone-200 -rotate-3 w-64 motion-element">
             <div class="w-24 h-5 bg-amber-200/70 absolute -top-2.5 left-1/2 -translate-x-1/2 rotate-2"></div>
             <div class="w-full h-56 overflow-hidden bg-stone-100">
               <img src="${data.coverPhoto || 'https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=600&q=80'}" class="w-full h-full object-cover" alt="Polaroid">
@@ -253,7 +313,7 @@
           </div>
 
           <!-- Gunungan SVG Besar -->
-          <div class="relative z-10 my-1 anim-float">
+          <div class="relative z-10 my-1 motion-element">
             <svg viewBox="0 0 200 230" class="w-44 h-52 mx-auto" fill="none" stroke="${p.primary}" stroke-width="1.6">
               <path d="M100 10 C138 55, 178 110, 188 215 L12 215 C22 110, 62 55, 100 10 Z" fill="${p.primary}" fill-opacity="0.08"/>
               <path d="M100 28 C130 68, 162 115, 170 205 L30 205 C38 115, 70 68, 100 28 Z" stroke-dasharray="4 3"/>
@@ -304,7 +364,7 @@
       // SAMPUL BOTANICAL FROSTED GLASS
       coverSlot.innerHTML = `
         <div class="w-full h-full relative flex flex-col justify-between items-center p-7 text-center">
-          <img src="${data.coverPhoto || "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=900&q=85"}" class="absolute inset-0 w-full h-full object-cover anim-kenburns" alt="Garden">
+          <img src="${data.coverPhoto || "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=900&q=85"}" class="absolute inset-0 w-full h-full object-cover motion-photo" alt="Garden">
           <div class="absolute inset-0 bg-emerald-950/35 backdrop-blur-[2px]"></div>
 
           <div class="relative z-10 w-full my-auto p-7 rounded-[36px] bg-white/75 backdrop-blur-xl border border-white shadow-2xl space-y-5" style="color:${p.textDark};">
@@ -336,7 +396,7 @@
       // LAYOUT 1: VOGUE MAGAZINE EDITORIAL (RATA KIRI, TYPOGRAPHY BESAR, ASYMMETRIC GRID)
       root.innerHTML = `
         <section id="sec-home" class="relative h-[88vh] flex flex-col justify-end p-7 text-white overflow-hidden">
-          <img src="${data.coverPhoto || "https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=900&q=85"}" class="absolute inset-0 w-full h-full object-cover anim-kenburns ${imgFilter}" alt="Hero">
+          <img src="${data.coverPhoto || "https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=900&q=85"}" class="absolute inset-0 w-full h-full object-cover motion-photo ${imgFilter}" alt="Hero">
           <div class="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent"></div>
           <div class="relative z-10 space-y-2 border-l-2 border-white pl-4">
             <p class="text-[10px] uppercase tracking-[0.35em] text-white/75">EDITION 31 . 10 . 2026</p>
@@ -408,7 +468,7 @@
           <p class="text-[10px] uppercase tracking-[0.3em] opacity-70">We Are Getting Married</p>
           <h1 class="text-5xl" style="font-family:${t.fonts.script}; color:${p.primary};">${data.brideNick} &amp; ${data.groomNick}</h1>
           
-          <div class="bg-white p-3 pb-7 shadow-xl border border-stone-200 rotate-2 max-w-[260px] mx-auto">
+          <div class="bg-white p-3 pb-7 shadow-xl border border-stone-200 rotate-2 max-w-[260px] mx-auto motion-element">
             <img src="${data.coverPhoto || 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=500&q=80'}" class="w-full h-60 object-cover" alt="Hero">
             <p class="mt-3 text-lg" style="font-family:${t.fonts.script};">${data.dateText}</p>
           </div>
@@ -432,12 +492,12 @@
         </section>
 
         <section id="sec-mempelai" class="p-7 space-y-6 text-center reveal">
-          <div class="bg-white p-5 pb-7 shadow-md border border-stone-200 -rotate-1">
+          <div class="bg-white p-5 pb-7 shadow-md border border-stone-200 -rotate-1 motion-card">
             <img src="${data.bridePhoto || "https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?auto=format&fit=crop&w=400&q=80"}" class="w-36 h-36 mx-auto object-cover rounded-full mb-3" alt="Bride">
             <h3 class="text-xl font-bold" style="font-family:${t.fonts.display}; color:${p.primary};">${data.brideFull}</h3>
             <p class="text-xs opacity-75 mt-1">${data.brideParents}</p>
           </div>
-          <div class="bg-white p-5 pb-7 shadow-md border border-stone-200 rotate-1">
+          <div class="bg-white p-5 pb-7 shadow-md border border-stone-200 rotate-1 motion-card">
             <img src="${data.groomPhoto || "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80"}" class="w-36 h-36 mx-auto object-cover rounded-full mb-3" alt="Groom">
             <h3 class="text-xl font-bold" style="font-family:${t.fonts.display}; color:${p.primary};">${data.groomFull}</h3>
             <p class="text-xs opacity-75 mt-1">${data.groomParents}</p>
@@ -458,7 +518,7 @@
       // LAYOUT 3: KERATON ADAT JAWA / SUNDA DENGAN PATTERN BATIK & BINGKAI EMAS
       root.innerHTML = `
         <section id="sec-home" class="batik-pattern min-h-[85vh] flex flex-col justify-center items-center text-center p-7 relative">
-          <div class="p-7 border-2 w-full space-y-4" style="background:${p.bgCard}; border-color:${p.primary};">
+          <div class="p-7 border-2 w-full space-y-4 motion-card" style="background:${p.bgCard}; border-color:${p.primary};">
             <p class="text-[10px] uppercase tracking-[0.35em]" style="color:${p.primary};">The Royal Wedding</p>
             <h1 class="text-4xl font-bold" style="font-family:${t.fonts.display}; color:${p.primary};">${data.brideNick} &amp; ${data.groomNick}</h1>
             <div class="w-44 h-56 mx-auto rounded-t-full overflow-hidden border-2" style="border-color:${p.primary};">
@@ -486,7 +546,7 @@
         </section>
 
         <section id="sec-acara" class="batik-pattern p-7 text-center reveal">
-          <div class="p-6 border-2 space-y-4" style="background:${p.bgCard}; border-color:${p.primary};">
+          <div class="p-6 border-2 space-y-4 motion-card" style="background:${p.bgCard}; border-color:${p.primary};">
             <h2 class="text-2xl font-bold" style="font-family:${t.fonts.display}; color:${p.primary};">Dinten &amp; Wekdal</h2>
             <p class="text-sm font-bold">${data.dateText}</p>
             <p class="text-xs opacity-80">Akad Nikah: 08.00 WIB • Resepsi: ${data.timeText}</p>
@@ -499,7 +559,7 @@
       // LAYOUT 4: GLASSMORPHISM / ENVELOPE / ISLAMIC ARCH
       root.innerHTML = `
         <section id="sec-home" class="min-h-[85vh] flex flex-col justify-center items-center text-center p-7 relative">
-          <div class="w-full p-7 rounded-[36px] border shadow-xl backdrop-blur-md space-y-5" style="background:${p.bgCard}; border-color:${p.border};">
+          <div class="w-full p-7 rounded-[36px] border shadow-xl backdrop-blur-md space-y-5 motion-card" style="background:${p.bgCard}; border-color:${p.border};">
             <p class="text-[10px] uppercase tracking-[0.3em] opacity-75">We Invite You To Celebrate</p>
             <h1 class="text-5xl" style="font-family:${t.fonts.script}; color:${p.primary};">${data.brideNick} &amp; ${data.groomNick}</h1>
             <div class="w-44 h-56 mx-auto rounded-t-full overflow-hidden border-2 shadow-md" style="border-color:${p.primary};">
@@ -510,7 +570,7 @@
         </section>
 
         <section id="sec-mempelai" class="p-7 text-center reveal">
-          <div class="p-7 rounded-[32px] border space-y-5 backdrop-blur-md" style="background:${p.bgCard}; border-color:${p.border};">
+          <div class="p-7 rounded-[32px] border space-y-5 backdrop-blur-md motion-card" style="background:${p.bgCard}; border-color:${p.border};">
             <p class="text-xs italic opacity-80">“Dan di antara tanda-tanda kekuasaan-Nya ialah Dia menciptakan untukmu pasangan hidup agar kamu merasa tenteram kepadanya.”</p>
             <div>
               ${data.bridePhoto ? `<img src="${data.bridePhoto}" class="w-24 h-24 mx-auto rounded-full object-cover border-2 mb-2 shadow" style="border-color:${p.primary};" alt="Bride">` : ''}
@@ -527,7 +587,7 @@
         </section>
 
         <section id="sec-acara" class="p-7 text-center reveal">
-          <div class="p-7 rounded-[32px] border space-y-4 backdrop-blur-md" style="background:${p.bgCard}; border-color:${p.border};">
+          <div class="p-7 rounded-[32px] border space-y-4 backdrop-blur-md motion-card" style="background:${p.bgCard}; border-color:${p.border};">
             <h2 class="text-3xl" style="font-family:${t.fonts.script}; color:${p.primary};">Rangkaian Acara</h2>
             <div class="p-4 rounded-2xl border" style="border-color:${p.border};">
               <p class="text-xs font-bold uppercase" style="color:${p.primary};">Akad &amp; Resepsi</p>
@@ -546,10 +606,10 @@
       <section id="sec-galeri" class="p-7 reveal">
         <h3 class="text-center text-2xl font-bold mb-4" style="font-family:${t.fonts.display}; color:${p.primary};">Galeri Momen</h3>
         <div class="grid grid-cols-2 gap-3">
-          <img src="${data.gallery1 || 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=400&q=80'}" class="w-full h-44 object-cover rounded-xl shadow ${imgFilter}" alt="G1">
-          <img src="${data.gallery2 || 'https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=400&q=80'}" class="w-full h-44 object-cover rounded-xl shadow ${imgFilter}" alt="G2">
-          <img src="${data.gallery3 || 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=400&q=80'}" class="w-full h-44 object-cover rounded-xl shadow ${imgFilter}" alt="G3">
-          <img src="${data.gallery4 || 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=400&q=80'}" class="w-full h-44 object-cover rounded-xl shadow ${imgFilter}" alt="G4">
+          <img src="${data.gallery1 || 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=400&q=80'}" class="w-full h-44 object-cover rounded-xl shadow motion-photo ${imgFilter}" alt="G1">
+          <img src="${data.gallery2 || 'https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=400&q=80'}" class="w-full h-44 object-cover rounded-xl shadow motion-photo ${imgFilter}" alt="G2">
+          <img src="${data.gallery3 || 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=400&q=80'}" class="w-full h-44 object-cover rounded-xl shadow motion-photo ${imgFilter}" alt="G3">
+          <img src="${data.gallery4 || 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=400&q=80'}" class="w-full h-44 object-cover rounded-xl shadow motion-photo ${imgFilter}" alt="G4">
         </div>
       </section>
 
@@ -651,13 +711,67 @@
       }
     }
 
+    function easeInOutCubic(t) {
+      return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    }
+
+    function animateScrollTo(targetEl, duration = 1250) {
+      if (!targetEl) return;
+      const stream = document.getElementById('invitationStream');
+      const useWindow = window.innerWidth < 1024 || !stream;
+      const startY = useWindow ? window.scrollY : stream.scrollTop;
+      const targetRect = targetEl.getBoundingClientRect();
+      const targetY = useWindow
+        ? startY + targetRect.top - 16
+        : startY + (targetRect.top - stream.getBoundingClientRect().top) - 16;
+      const distance = targetY - startY;
+      let startTime = null;
+
+      function step(currentTime) {
+        if (!startTime) startTime = currentTime;
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const nextPos = startY + distance * easeInOutCubic(progress);
+
+        if (useWindow) {
+          window.scrollTo(0, nextPos);
+        } else {
+          stream.scrollTo(0, nextPos);
+        }
+
+        if (progress < 1) {
+          requestAnimationFrame(step);
+        }
+      }
+      requestAnimationFrame(step);
+    }
+
+    function smoothGlideTo(sectionId, ev) {
+      if (ev) ev.preventDefault();
+      const target = document.getElementById(sectionId);
+      const curtain = document.getElementById('slideTransitionCurtain');
+      if (curtain) curtain.classList.add('active');
+      if (target) {
+        target.classList.add('visible');
+        animateScrollTo(target, 1250);
+      }
+      setTimeout(() => {
+        if (curtain) curtain.classList.remove('active');
+      }, 650);
+    }
+
     function bukaUndangan() {
       const cov = document.getElementById('coverOverlay');
-      cov.style.transform = 'translateY(-100%)';
+      cov.style.transition = 'transform 1.35s cubic-bezier(0.22, 1, 0.36, 1), opacity 1.15s cubic-bezier(0.22, 1, 0.36, 1)';
+      cov.style.transform = 'translateY(-100%) scale(0.97)';
       cov.style.opacity = '0';
-      setTimeout(() => cov.style.display = 'none', 900);
+      setTimeout(() => cov.style.display = 'none', 1380);
       startMusic();
-      triggerReveal();
+      setTimeout(() => {
+        triggerReveal();
+        const firstSec = document.getElementById('sec-mempelai');
+        if (firstSec) firstSec.classList.add('visible');
+      }, 350);
     }
 
     function kirimUcapan() {
@@ -675,8 +789,15 @@
 
     function triggerReveal() {
       const obs = new IntersectionObserver(entries => {
-        entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-      }, { threshold: 0.12 });
+        entries.forEach((e, idx) => {
+          if (e.isIntersecting) {
+            setTimeout(() => {
+              e.target.classList.add('visible');
+            }, idx * 90);
+            obs.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
       document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
     }
     if (urlParams.get('open') === '1') {
