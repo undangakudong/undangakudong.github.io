@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UNDANG AKU DONG — Undangan Pernikahan Digital Eksklusif &amp; Estetik</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cinzel+Decorative:wght@700&family=Cinzel:wght@600;700&family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Great+Vibes&family=Lora:wght@500;600&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      color: #2A211B;
+      background-color: #EAE4DC;
+      background-image:
+        linear-gradient(to bottom, rgba(252, 249, 244, 0.72), rgba(246, 241, 234, 0.78)),
+        url('bg-rings-bouquet.jpg');
+      background-size: cover, cover;
+      background-repeat: no-repeat, no-repeat;
+      background-attachment: fixed, fixed;
+      background-position: center center, center 62%;
+    }
+    .font-editorial { font-family: 'Playfair Display', serif; }
+    .font-script { font-family: 'Alex Brush', cursive; }
+
+    @keyframes floatSlow {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-10px) rotate(1.5deg); }
+    }
+    .anim-float { animation: floatSlow 6s ease-in-out infinite; }
+    .anim-float-delay { animation: floatSlow 7.5s ease-in-out 1.5s infinite; }
+
+    .glass-panel {
+      background: rgba(255, 253, 250, 0.86);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(180, 148, 108, 0.36);
+    }
+  </style>
+</head>
+<body class="antialiased relative overflow-x-hidden">
+
+  <!-- DECORATIVE AMBIENT GLOW BLOBS -->
+  <div class="pointer-events-none fixed inset-0 overflow-hidden -z-10">
+    <div class="absolute -top-24 -left-24 w-96 h-96 rounded-full bg-rose-200/35 blur-3xl"></div>
+    <div class="absolute top-1/3 -right-24 w-[28rem] h-[28rem] rounded-full bg-amber-200/30 blur-3xl"></div>
+    <div class="absolute bottom-0 left-1/4 w-96 h-96 rounded-full bg-emerald-100/40 blur-3xl"></div>
+  </div>
+
+  <!-- NAVBAR (GLASSMORPHISM CREAM) -->
+  <header class="sticky top-0 z-40 glass-panel border-b border-amber-900/10">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-2.5">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-700 to-stone-900 text-amber-50 flex items-center justify-center font-editorial font-bold text-lg shadow-sm">U</div>
+        <span class="font-extrabold text-base sm:text-lg tracking-tight text-stone-900">UNDANG AKU <span class="text-amber-700">DONG</span></span>
+      </a>
+      <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-stone-600">
+        <a href="#beranda" class="text-amber-800 font-bold">Home</a>
+        <a href="#katalog" class="hover:text-amber-800 transition">Koleksi Desain</a>
+        <a href="#alur" class="hover:text-amber-800 transition">Cara Pesan</a>
+        <a href="#harga" class="hover:text-amber-800 transition">Harga</a>
+        <a href="editor.html" class="hover:text-amber-800 transition">Live Builder</a>
+        <a href="tamu.html" class="hover:text-amber-800 transition">Generator Tamu</a>
+      </nav>
+      <div class="relative">
+        <button onclick="openAdminModal('Halo Admin UNDANG AKU DONG, saya ingin konsultasi / pesan undangan pernikahan')" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-stone-900 hover:bg-amber-900 text-amber-50 text-xs sm:text-sm font-bold shadow-md transition cursor-pointer">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 fill-current text-emerald-400" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.1.824z"/></svg>
+          <span>Pesan Sekarang</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- AESTHETIC HERO SECTION -->
+  <section id="beranda" class="relative pt-14 pb-16 overflow-hidden">
+    <!-- Botanical Line Art Ornaments (Left & Right) -->
+    <svg class="hidden lg:block absolute left-8 top-12 w-44 h-44 text-amber-800/20 anim-float pointer-events-none" viewBox="0 0 200 200" fill="none" stroke="currentColor" stroke-width="1.3">
+      <path d="M30 180 C60 120, 100 80, 165 25" />
+      <path d="M75 125 C50 115, 40 90, 55 75 C70 90, 80 105, 75 125 Z" />
+      <path d="M105 95 C130 105, 145 125, 130 140 C115 125, 105 110, 105 95 Z" />
+      <path d="M125 65 C100 55, 95 30, 110 20 C125 35, 130 50, 125 65 Z" />
+      <circle cx="165" cy="25" r="4" fill="currentColor" />
+    </svg>
+
+    <svg class="hidden lg:block absolute right-8 bottom-8 w-44 h-44 text-rose-800/20 anim-float-delay pointer-events-none" viewBox="0 0 200 200" fill="none" stroke="currentColor" stroke-width="1.3">
+      <path d="M170 20 C140 80, 100 120, 35 175" />
+      <path d="M125 75 C150 85, 160 110, 145 125 C130 110, 120 95, 125 75 Z" />
+      <path d="M95 105 C70 95, 55 75, 70 60 C85 75, 95 90, 95 105 Z" />
+      <circle cx="35" cy="175" r="4" fill="currentColor" />
+    </svg>
+
+    <div class="max-w-4xl mx-auto px-4 text-center space-y-6 relative z-10">
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-panel shadow-sm text-xs font-bold text-amber-900">
+        <span>✨</span>
+        <span>Luxury &amp; Aesthetic Digital Wedding Invitation</span>
+      </div>
+
+      <h1 class="font-editorial text-4xl sm:text-6xl font-bold text-stone-900 leading-[1.12] tracking-tight">
+        Abadikan Momen Suci dengan <span class="italic font-normal text-amber-800">Undangan Digital</span> Berkelas
+      </h1>
+
+      <p class="text-stone-600 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
+        Dirancang khusus dengan estetika tinggi—mulai dari gaya majalah <strong>Vogue Editorial</strong>, <strong>Amplop Segel Lilin 3D</strong>, <strong>Keraton Adat Nusantara</strong>, hingga <strong>Scrapbook Polaroid</strong> yang memukau setiap tamu.
+      </p>
+
+      <div class="flex flex-wrap justify-center gap-3.5 pt-2">
+        <a href="#katalog" class="px-7 py-3.5 rounded-full bg-stone-900 hover:bg-amber-900 text-amber-50 font-bold text-sm shadow-xl shadow-stone-900/15 transition">
+          Jelajahi Koleksi Tema &darr;
+        </a>
+        <a href="editor.html" class="px-7 py-3.5 rounded-full glass-panel hover:bg-white text-stone-900 font-bold text-sm shadow-sm transition">
+          ✏️ Coba Edit di Live Builder
+        </a>
+      </div>
+
+      <!-- Aesthetic Trust Pill Strip -->
+      <div class="pt-6 flex flex-wrap items-center justify-center gap-4 sm:gap-8 text-xs text-stone-600 font-medium">
+        <span class="flex items-center gap-1.5"><span class="text-amber-700">✦</span> Musik Custom MP3</span>
+        <span class="flex items-center gap-1.5"><span class="text-amber-700">✦</span> Unlimited Ribuan Nama Tamu</span>
+        <span class="flex items-center gap-1.5"><span class="text-amber-700">✦</span> Amplop Digital &amp; RSVP</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- KATALOG KHUSUS PERNIKAHAN -->
+  <section id="katalog" class="py-12">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+      <div class="text-center mb-7">
+        <p class="font-script text-3xl text-amber-800">Curated Collection</p>
+        <h2 class="font-editorial text-2xl sm:text-3xl font-bold text-stone-900">Pilih Konsep Desain Impianmu</h2>
+      </div>
+
+      <!-- Filter Gaya Pernikahan -->
+      <div class="flex flex-wrap items-center justify-center gap-2 pb-9">
+        <button onclick="filterTheme('all', this)" class="f-btn px-4 py-2 rounded-full text-xs font-bold bg-stone-900 text-amber-50 shadow-md">Semua Konsep (8)</button>
+        <button onclick="filterTheme('editorial', this)" class="f-btn px-4 py-2 rounded-full text-xs font-semibold glass-panel text-stone-700 hover:bg-white">Magazine Editorial</button>
+        <button onclick="filterTheme('envelope', this)" class="f-btn px-4 py-2 rounded-full text-xs font-semibold glass-panel text-stone-700 hover:bg-white">Amplop Segel 3D</button>
+        <button onclick="filterTheme('adat', this)" class="f-btn px-4 py-2 rounded-full text-xs font-semibold glass-panel text-stone-700 hover:bg-white">Adat Nusantara</button>
+        <button onclick="filterTheme('botanical', this)" class="f-btn px-4 py-2 rounded-full text-xs font-semibold glass-panel text-stone-700 hover:bg-white">Glassmorphism</button>
+        <button onclick="filterTheme('aesthetic', this)" class="f-btn px-4 py-2 rounded-full text-xs font-semibold glass-panel text-stone-700 hover:bg-white">Polaroid Scrapbook</button>
+        <button onclick="filterTheme('islami', this)" class="f-btn px-4 py-2 rounded-full text-xs font-semibold glass-panel text-stone-700 hover:bg-white">Walimah Islami</button>
+      </div>
+
+      <!-- Grid Cards -->
+      <div id="themeGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
+    </div>
+  </section>
+
+  <!-- ALUR PEMESANAN & PEMBAYARAN -->
+  <section id="alur" class="py-14">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 text-center">
+      <p class="font-script text-3xl text-amber-800">Seamless Experience</p>
+      <h2 class="font-editorial text-2xl sm:text-3xl font-bold text-stone-900">Alur Pembuatan &amp; Aktivasi Undangan</h2>
+      <div class="grid sm:grid-cols-4 gap-4 mt-8 text-left">
+        <div class="glass-panel p-5 rounded-3xl shadow-sm">
+          <span class="w-8 h-8 rounded-full bg-stone-900 text-amber-100 font-bold text-xs flex items-center justify-center">1</span>
+          <h3 class="font-bold text-sm text-stone-900 mt-3">Pilih &amp; Coba Edit</h3>
+          <p class="text-xs text-stone-600 mt-1 leading-relaxed">Pilih desain favoritmu dan coba isi data mempelai, foto, serta musik custom di Live Builder.</p>
+        </div>
+        <div class="glass-panel p-5 rounded-3xl shadow-sm">
+          <span class="w-8 h-8 rounded-full bg-stone-900 text-amber-100 font-bold text-xs flex items-center justify-center">2</span>
+          <h3 class="font-bold text-sm text-stone-900 mt-3">Pilih Pembayaran</h3>
+          <p class="text-xs text-stone-600 mt-1 leading-relaxed">Pilih metode pembayaran (Transfer Bank BCA/BRI/Mandiri, QRIS, atau E-Wallet) lalu kirim order ke WA.</p>
+        </div>
+        <div class="glass-panel p-5 rounded-3xl shadow-sm">
+          <span class="w-8 h-8 rounded-full bg-stone-900 text-amber-100 font-bold text-xs flex items-center justify-center">3</span>
+          <h3 class="font-bold text-sm text-stone-900 mt-3">Konfirmasi &amp; Aktif</h3>
+          <p class="text-xs text-stone-600 mt-1 leading-relaxed">Setelah pembayaran terkonfirmasi, Admin mengaktifkan link resmi undanganmu (aktif 1 tahun penuh).</p>
+        </div>
+        <div class="glass-panel p-5 rounded-3xl shadow-sm">
+          <span class="w-8 h-8 rounded-full bg-amber-800 text-white font-bold text-xs flex items-center justify-center">4</span>
+          <h3 class="font-bold text-sm text-stone-900 mt-3">Sebar Ribuan Tamu</h3>
+          <p class="text-xs text-stone-600 mt-1 leading-relaxed">Gunakan <a href="tamu.html" class="text-amber-800 font-bold underline">Generator Tamu</a> untuk membuat ribuan link nama tamu otomatis dalam 1 klik.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section id="harga" class="py-16">
+    <div class="max-w-4xl mx-auto px-4 text-center">
+      <p class="font-script text-3xl text-amber-800">Special Investment</p>
+      <h2 class="font-editorial text-2xl sm:text-3xl font-bold text-stone-900">Pilih Paket Pembuatan</h2>
+      <div class="grid md:grid-cols-2 gap-6 mt-8 text-left">
+        <div class="glass-panel p-7 rounded-3xl flex flex-col justify-between shadow-sm">
+          <div>
+            <span class="text-xs font-bold text-amber-800 uppercase tracking-wider">Edit Mandiri</span>
+            <h3 class="font-editorial text-2xl font-bold mt-1 text-stone-900">Self-Service</h3>
+            <p class="text-3xl font-extrabold text-stone-900 mt-3">Rp 49.000 <span class="text-xs font-normal text-stone-400 line-through">Rp 199.000</span></p>
+            <ul class="mt-4 space-y-2.5 text-xs text-stone-600">
+              <li>✦ Bebas pilih semua 8 konsep desain unik</li>
+              <li>✦ Ganti foto, teks, musik custom MP3 &amp; rekening</li>
+              <li>✦ Link nama tamu otomatis (<code>?kpd=Nama</code>)</li>
+            </ul>
+          </div>
+          <a href="editor.html" class="mt-6 block text-center py-3.5 rounded-full bg-stone-900 hover:bg-amber-900 text-amber-50 font-bold text-xs uppercase tracking-wider transition">Mulai Buat Sekarang</a>
+        </div>
+        <div class="bg-white/95 backdrop-blur p-7 rounded-3xl border-2 border-amber-700/60 shadow-xl flex flex-col justify-between relative">
+          <span class="absolute -top-3 right-6 px-3 py-0.5 rounded-full bg-amber-800 text-amber-50 text-[10px] font-bold uppercase tracking-wider">Paling Laris</span>
+          <div>
+            <span class="text-xs font-bold text-emerald-700 uppercase tracking-wider">Terima Beres</span>
+            <h3 class="font-editorial text-2xl font-bold mt-1 text-stone-900">Dibuatkan Admin</h3>
+            <p class="text-3xl font-extrabold text-stone-900 mt-3">Rp 79.000 <span class="text-xs font-normal text-stone-400 line-through">Rp 250.000</span></p>
+            <ul class="mt-4 space-y-2.5 text-xs text-stone-600">
+              <li>✦ <strong>Tinggal kirim data &amp; foto ke WhatsApp</strong></li>
+              <li>✦ Bayar setelah undangan selesai dibuat</li>
+              <li>✦ Bebas revisi sampai hari-H pernikahan</li>
+            </ul>
+          </div>
+          <button onclick="openAdminModal('Halo Admin UNDANG AKU DONG, saya mau pesan paket Dibuatkan Admin (Terima Beres)')" class="mt-6 w-full inline-flex items-center justify-center gap-2 py-3.5 rounded-full bg-amber-800 hover:bg-amber-900 text-white font-bold text-xs uppercase tracking-wider transition cursor-pointer shadow-md">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 fill-current text-emerald-300" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.1.824z"/></svg>
+            <span>Pesan via WhatsApp</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="py-8 border-t border-amber-900/10 text-center text-xs text-stone-500">
+    <p class="font-editorial text-base font-bold text-stone-800">UNDANG AKU DONG</p>
+    <p class="mt-1">Platform Undangan Pernikahan Digital Eksklusif &amp; Estetik</p>
+    <p class="mt-1.5 text-stone-600 font-medium">WhatsApp Admin 1: <a href="https://wa.me/6285854573719" target="_blank" class="underline hover:text-amber-800">0858-5457-3719</a> &bull; Admin 2: <a href="https://wa.me/6283891526603" target="_blank" class="underline hover:text-amber-800">0838-9152-6603</a></p>
+  </footer>
+
+
+  <!-- MODAL PILIH ADMIN WHATSAPP -->
+  <div id="adminWaModal" onclick="if(event.target===this) closeAdminModal()" class="fixed inset-0 z-50 hidden items-center justify-center bg-stone-950/60 backdrop-blur-sm p-4">
+    <div class="bg-[#FFFDF9] border border-amber-900/20 rounded-3xl max-w-sm w-full p-6 shadow-2xl space-y-4 text-center relative">
+      <button onclick="closeAdminModal()" class="absolute top-4 right-5 text-stone-400 hover:text-stone-700 text-xl font-bold">&times;</button>
+      <div class="w-12 h-12 mx-auto rounded-2xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-600">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.1.824z"/></svg>
+      </div>
+      <div>
+        <h3 class="font-editorial text-xl font-bold text-stone-900">Hubungi Admin WhatsApp</h3>
+        <p class="text-xs text-stone-500 mt-1">Silakan pilih salah satu nomor Admin kami untuk konsultasi &amp; pemesanan:</p>
+      </div>
+
+      <div class="space-y-2.5 pt-1 text-left">
+        <a id="waLinkAdmin1" href="https://wa.me/6285854573719" target="_blank" class="flex items-center justify-between p-3.5 rounded-2xl border border-amber-900/20 bg-white hover:bg-amber-50/70 transition group">
+          <div class="flex items-center gap-3">
+            <span class="w-9 h-9 rounded-full bg-stone-900 text-amber-50 font-bold text-xs flex items-center justify-center">1</span>
+            <div>
+              <p class="text-xs font-bold text-stone-900">Admin 1 (Fast Response)</p>
+              <p class="text-[11px] font-mono text-stone-500">0858-5457-3719</p>
+            </div>
+          </div>
+          <span class="text-xs font-bold text-emerald-600 group-hover:translate-x-0.5 transition">Chat &rarr;</span>
+        </a>
+
+        <a id="waLinkAdmin2" href="https://wa.me/6283891526603" target="_blank" class="flex items-center justify-between p-3.5 rounded-2xl border border-amber-900/20 bg-white hover:bg-amber-50/70 transition group">
+          <div class="flex items-center gap-3">
+            <span class="w-9 h-9 rounded-full bg-amber-800 text-amber-50 font-bold text-xs flex items-center justify-center">2</span>
+            <div>
+              <p class="text-xs font-bold text-stone-900">Admin 2 (Fast Response)</p>
+              <p class="text-[11px] font-mono text-stone-500">0838-9152-6603</p>
+            </div>
+          </div>
+          <span class="text-xs font-bold text-emerald-600 group-hover:translate-x-0.5 transition">Chat &rarr;</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script src="themes.js"></script>
+  <script>
+    function getMiniThumbnail(t) {
+      const p = t.palette;
+      if (t.layoutEngine === 'editorial') {
+        return `
+          <div class="w-36 h-52 rounded-xl overflow-hidden shadow-xl relative border border-black/20 flex flex-col justify-end p-3 text-left text-white">
+            <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=300&q=75" class="absolute inset-0 w-full h-full object-cover ${t.id.includes('monochrome') ? 'grayscale' : ''}" alt="Ed">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
+            <div class="relative z-10 border-l border-white pl-2">
+              <p class="text-[7px] tracking-widest uppercase opacity-75">VOGUE ISSUE</p>
+              <p class="text-base font-extrabold leading-none" style="font-family:${t.fonts.display};">Dewi &amp;<br>Ihab</p>
+            </div>
+          </div>
+        `;
+      }
+      if (t.layoutEngine === 'envelope') {
+        return `
+          <div class="w-40 h-44 rounded-xl shadow-xl border-2 flex flex-col items-center justify-center relative overflow-hidden" style="background:#EFE6D8; border-color:${p.accent};">
+            <div class="absolute top-0 left-0 right-0 h-1/2" style="background:#E3D4BE; clip-path: polygon(0 0, 50% 100%, 100% 0);"></div>
+            <div class="relative z-10 w-11 h-11 rounded-full bg-red-800 text-white flex items-center justify-center text-[10px] font-bold shadow-md border-2 border-amber-200/50">D&amp;I</div>
+            <p class="relative z-10 text-[9px] font-bold mt-3 text-stone-700">Amplop Segel 3D</p>
+          </div>
+        `;
+      }
+      if (t.layoutEngine === 'polaroid') {
+        return `
+          <div class="w-36 h-48 bg-white p-2 pb-5 shadow-xl border border-stone-200 -rotate-3 flex flex-col justify-between">
+            <img src="https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=300&q=75" class="w-full h-32 object-cover" alt="Pol">
+            <p class="text-sm text-center" style="font-family:${t.fonts.script}; color:${p.primary};">Dewi &amp; Ihab</p>
+          </div>
+        `;
+      }
+      if (t.layoutEngine === 'javanese') {
+        return `
+          <div class="w-36 h-52 p-3 border-2 shadow-xl flex flex-col justify-between items-center text-center" style="background:${p.bgMain}; border-color:${p.primary}; color:${p.primary};">
+            <span class="text-[7px] uppercase tracking-widest">PAWIWAHAN</span>
+            <svg viewBox="0 0 100 120" class="w-16 h-20" fill="none" stroke="${p.primary}" stroke-width="2">
+              <path d="M50 5 C70 30, 90 60, 95 110 L5 110 C10 60, 30 30, 50 5 Z" />
+              <circle cx="50" cy="65" r="14" />
+            </svg>
+            <p class="text-xs font-bold" style="font-family:${t.fonts.display};">Dewi &amp; Ihab</p>
+          </div>
+        `;
+      }
+      if (t.layoutEngine === 'islamic') {
+        return `
+          <div class="w-36 h-52 rounded-t-full p-3 border-2 shadow-xl flex flex-col justify-center items-center text-center space-y-1" style="background:${p.bgMain}; border-color:${p.primary}; color:${p.primary};">
+            <span class="text-base">🕌</span>
+            <p class="text-[7px] uppercase tracking-widest opacity-80">Walimatul Ursy</p>
+            <p class="text-sm font-bold leading-tight" style="font-family:${t.fonts.display};">Dewi &amp;<br>Ihab</p>
+          </div>
+        `;
+      }
+      return `
+        <div class="w-36 h-52 rounded-2xl overflow-hidden relative shadow-xl flex items-center justify-center p-2">
+          <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=300&q=75" class="absolute inset-0 w-full h-full object-cover" alt="Glass">
+          <div class="relative z-10 w-full py-5 px-2 rounded-2xl bg-white/80 backdrop-blur-md text-center">
+            <p class="text-xl" style="font-family:${t.fonts.script}; color:${p.primary};">Dewi &amp; Ihab</p>
+            <p class="text-[8px] font-bold uppercase mt-1 text-emerald-900">Glass Garden</p>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderCatalog(cat = 'all') {
+      const grid = document.getElementById('themeGrid');
+      const list = cat === 'all' ? UNDANGAKUDONG_THEMES : UNDANGAKUDONG_THEMES.filter(t => t.category === cat);
+      grid.innerHTML = list.map(t => `
+        <div class="group rounded-3xl glass-panel overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition flex flex-col">
+          <div class="h-60 p-4 flex items-center justify-center relative overflow-hidden bg-stone-200/40">
+            <span class="absolute top-3 left-3 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-white/95 text-stone-800 shadow-sm z-20">${t.badge}</span>
+            <div class="group-hover:scale-105 transition duration-300">${getMiniThumbnail(t)}</div>
+          </div>
+
+          <div class="p-5 flex-1 flex flex-col justify-between text-center">
+            <div>
+              <h3 class="font-editorial font-bold text-stone-900 text-lg">${t.name}</h3>
+              <p class="text-[11px] text-stone-600 mt-1 line-clamp-2">${t.description}</p>
+              <div class="mt-2.5">
+                <span class="text-[11px] text-stone-400 line-through mr-1">${t.priceOriginal}</span>
+                <span class="text-xs font-extrabold text-amber-800">${t.pricePromo}</span>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2 mt-4">
+              <a href="undangan.html?theme=${t.id}&kpd=Bapak%20Budi" target="_blank" class="py-2 rounded-full border border-stone-800 text-stone-800 hover:bg-stone-100 text-xs font-bold transition">
+                👁 Preview
+              </a>
+              <a href="editor.html?theme=${t.id}" class="py-2 rounded-full bg-stone-900 hover:bg-amber-900 text-amber-50 text-xs font-bold transition">
+                Gunakan
+              </a>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function filterTheme(cat, btn) {
+      document.querySelectorAll('.f-btn').forEach(b => {
+        b.classList.remove('bg-stone-900', 'text-amber-50', 'shadow-md');
+        b.classList.add('glass-panel', 'text-stone-700');
+      });
+      btn.classList.remove('glass-panel', 'text-stone-700');
+      btn.classList.add('bg-stone-900', 'text-amber-50', 'shadow-md');
+      renderCatalog(cat);
+    }
+
+
+    function openAdminModal(customText) {
+      const encoded = encodeURIComponent(customText || 'Halo Admin UNDANG AKU DONG, saya ingin konsultasi / pesan undangan pernikahan');
+      document.getElementById('waLinkAdmin1').href = `https://wa.me/6285854573719?text=${encoded}`;
+      document.getElementById('waLinkAdmin2').href = `https://wa.me/6283891526603?text=${encoded}`;
+      const modal = document.getElementById('adminWaModal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeAdminModal() {
+      const modal = document.getElementById('adminWaModal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    renderCatalog('all');
+  </script>
+</body>
+</html>

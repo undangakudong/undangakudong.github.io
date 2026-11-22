@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Live Builder Undangan — UNDANG AKU DONG</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cinzel+Decorative:wght@700&family=Cinzel:wght@600&family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Great+Vibes&family=Lora:wght@500;600&family=Playfair+Display:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .iphone-chassis {
+      background: linear-gradient(145deg, #2c2d30, #16171a);
+      box-shadow:
+        0 25px 60px -15px rgba(15, 23, 42, 0.45),
+        inset 0 0 0 2px #4b4d52,
+        inset 0 0 0 5px #0f1012;
+    }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 h-screen flex flex-col overflow-hidden">
+
+  <!-- TOP EDITOR BAR -->
+  <header class="h-14 bg-white border-b border-slate-200 px-4 flex items-center justify-between shrink-0 z-20">
+    <div class="flex items-center gap-3">
+      <a href="index.html" class="text-xs font-bold text-slate-500 hover:text-sky-600">&larr; Kembali</a>
+      <span class="h-4 w-px bg-slate-200"></span>
+      <span class="font-extrabold text-xs sm:text-sm text-slate-900">UNDANG AKU <span class="text-sky-500">DONG</span> <span class="hidden sm:inline text-slate-400 font-medium">| Simulasi Edit Mandiri</span></span>
+    </div>
+
+    <div class="flex items-center gap-2">
+      <a href="tamu.html" target="_blank" class="hidden md:inline-flex items-center gap-1 px-3 py-1.5 rounded-lg border border-sky-200 bg-sky-50 hover:bg-sky-100 text-xs font-bold text-sky-700">
+        👥 Generator Ribuan Tamu
+      </a>
+      <button onclick="openFullPreview()" class="px-3 py-1.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-xs font-bold text-slate-700">
+        Preview Layar Penuh &nearr;
+      </button>
+      <button onclick="openOrderModal()" class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-sm transition">
+        <span>💳 Pesan &amp; Bayar</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- SPLIT WORKSPACE -->
+  <div class="flex-1 grid lg:grid-cols-12 overflow-hidden">
+    <!-- LEFT SIDE: COMPLETE FORM INPUTS -->
+    <div class="lg:col-span-6 xl:col-span-5 bg-white border-r border-slate-200 overflow-y-auto p-5 space-y-6">
+      
+      <!-- 1. Pilih Desain Tema Luxury (1-Klik) -->
+      <div>
+        <div class="flex items-center justify-between mb-2">
+          <label class="block text-xs font-extrabold uppercase tracking-wider text-sky-600">1. Pilih Konsep Desain Tema (1-Klik)</label>
+          <span id="selectedPriceTag" class="text-[11px] font-extrabold px-2 py-0.5 rounded bg-sky-50 text-sky-700 border border-sky-200">Rp 59.000</span>
+        </div>
+        <div id="themeSelector" class="grid grid-cols-2 gap-2"></div>
+      </div>
+
+      <hr class="border-slate-100">
+
+      <!-- 2. Foto Sampul & Mempelai -->
+      <div class="space-y-3">
+        <label class="block text-xs font-extrabold uppercase tracking-wider text-sky-600">2. Ganti Foto Prewedding (Opsional)</label>
+        <div class="grid grid-cols-3 gap-2">
+          <label class="cursor-pointer p-2.5 rounded-xl border border-dashed border-slate-300 hover:border-sky-500 text-center bg-slate-50/70 transition">
+            <span class="block text-base">🖼️</span>
+            <span class="block text-[10px] font-bold text-slate-700 mt-0.5">Foto Sampul</span>
+            <input type="file" accept="image/*" class="hidden" onchange="handlePhotoUpload(event, 'coverPhoto')">
+          </label>
+          <label class="cursor-pointer p-2.5 rounded-xl border border-dashed border-slate-300 hover:border-sky-500 text-center bg-slate-50/70 transition">
+            <span class="block text-base">👰</span>
+            <span class="block text-[10px] font-bold text-slate-700 mt-0.5">Foto Wanita</span>
+            <input type="file" accept="image/*" class="hidden" onchange="handlePhotoUpload(event, 'bridePhoto')">
+          </label>
+          <label class="cursor-pointer p-2.5 rounded-xl border border-dashed border-slate-300 hover:border-sky-500 text-center bg-slate-50/70 transition">
+            <span class="block text-base">🤵</span>
+            <span class="block text-[10px] font-bold text-slate-700 mt-0.5">Foto Pria</span>
+            <input type="file" accept="image/*" class="hidden" onchange="handlePhotoUpload(event, 'groomPhoto')">
+          </label>
+        </div>
+      </div>
+
+      <hr class="border-slate-100">
+
+      <!-- 3. Data Lengkap Mempelai -->
+      <div class="space-y-3">
+        <label class="block text-xs font-extrabold uppercase tracking-wider text-sky-600">3. Data Mempelai &amp; Orang Tua</label>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <span class="text-[11px] font-semibold text-slate-500">Nama Panggilan Wanita</span>
+            <input id="inBrideNick" type="text" value="Dewi" oninput="syncToPhone()" class="mt-1 w-full px-3 py-2 rounded-lg border border-slate-200 text-xs font-medium focus:outline-sky-500">
+          </div>
+          <div>
+            <span class="text-[11px] font-semibold text-slate-500">Nama Panggilan Pria</span>
+            <input id="inGroomNick" type="text" value="Ihab" oninput="syncToPhone()" class="mt-1 w-full px-3 py-2 rounded-lg border border-slate-200 text-xs font-medium focus:outline-sky-500">
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <span class="text-[11px] font-semibold text-slate-500">Nama Lengkap + Gelar (Wanita)</span>
+            <input id="inBrideFull" type="text" value="Dewi Anisa, S.Pd." oninput="syncToPhone()" class="mt-1 w-full px-3 py-2 rounded-lg border border-slate-200 text-xs font-medium">
+          </div>
+          <div>
+            <span class="text-[11px] font-semibold text-slate-500">Nama Lengkap + Gelar (Pria)</span>
+            <input id="inGroomFull" type="text" value="Ihab Taufik, S.Akt." oninput="syncToPhone()" class="mt-1 w-full px-3 py-2 rounded-lg border border-slate-200 text-xs font-medium">
+          </div>
+        </div>
+        <div>
+          <span class="text-[11px] font-semibold text-slate-500">Keterangan Orang Tua Wanita</span>
+          <input id="inBrideParents" type="text" value="Putri ke-1 dari Bpk. Sodri & Ibu Mamah Marhamah" oninput="syncToPhone()" class="mt-1 w-full px-3 py-2 rounded-lg border border-slate-200 text-xs">
+        </div>
+        <div>
+          <span class="text-[11px] font-semibold text-slate-500">Keterangan Orang Tua Pria</span>
+          <input id="inGroomParents" type="text" value="Putra ke-2 dari Bpk. H. Yaya Ruwiya Dinata & Ibu Alfin Taslim" oninput="syncToPhone()" class="mt-1 w-full px-3 py-2 rounded-lg border border-slate-200 text-xs">
+        </div>
+      </div>
+
+      <hr class="border-slate-100">
+
+      <!-- 4. Waktu & Lokasi Acara -->
+      <div class="space-y-3">
+        <label class="block text-xs font-extrabold uppercase tracking-wider text-sky-600">4. Jadwal Akad, Resepsi &amp; Lokasi</label>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <span class="text-[11px] font-semibold text-slate-500">Hari &amp; Tanggal Acara</span>
+            <input id="inDateText" type="text" value="Sabtu, 31 Oktober 2026" oninput="syncToPhone()" class="mt-1 w-full px-3 py-2 rounded-lg border border-slate-200 text-xs">
+          </div>
+          <div>
+            <span class="text-[11px] font-semibold text-slate-500">Jam Akad &amp; Resepsi</span>
+            <input id="inTimeText" type="text" value="Akad 08.00 | Resepsi 11.00 WIB" oninput="syncToPhone()" class="mt-1 w-full px-3 py-2 rounded-lg border border-slate-200 text-xs">
+          </div>
+        </div>
+        <div>
+          <span class="text-[11px] font-semibold text-slate-500">Nama Gedung / Alamat Lengkap</span>
+          <input id="inVenue" type="text" value="Grand Ballroom Hotel Harmoni, Jl. Merdeka No. 45, Bandung" oninput="syncToPhone()" class="mt-1 w-full px-3 py-2 rounded-lg border border-slate-200 text-xs">
+        </div>
+        <div>
+          <span class="text-[11px] font-semibold text-slate-500">Link Google Maps Lokasi</span>
+          <input id="inMapsUrl" type="url" value="https://maps.google.com" oninput="syncToPhone()" class="mt-1 w-full px-3 py-2 rounded-lg border border-slate-200 text-xs text-sky-700">
+        </div>
+      </div>
+
+      <hr class="border-slate-100">
+
+      <!-- 5. Musik Latar Custom (Preset / Upload MP3 / Link Lagu) -->
+      <div class="space-y-3">
+        <label class="block text-xs font-extrabold uppercase tracking-wider text-sky-600">5. Musik Latar Undangan (Bisa Custom MP3)</label>
+        <div class="grid grid-cols-3 gap-1.5 bg-slate-100 p-1 rounded-xl text-[11px] font-bold">
+          <button type="button" onclick="setMusicMode('preset')" id="tabMusicPreset" class="py-1.5 rounded-lg bg-white text-sky-600 shadow-sm">Musik Bawaan</button>
+          <button type="button" onclick="setMusicMode('upload')" id="tabMusicUpload" class="py-1.5 rounded-lg text-slate-600">Upload MP3</button>
+          <button type="button" onclick="setMusicMode('url')" id="tabMusicUrl" class="py-1.5 rounded-lg text-slate-600">Link / Request</button>
+        </div>
+
+        <!-- Mode A: Preset -->
+        <div id="musicBoxPreset">
+          <select id="inMusicPreset" onchange="syncToPhone()" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-xs bg-white">
+            <option value="piano">🎹 Romantic Piano Instrumental</option>
+            <option value="marry">🎻 Canon in D — Wedding Classic</option>
+            <option value="nasyid">🕌 Shalawat / Walimah Acoustic</option>
+            <option value="gamelan">🎶 Gamelan Jawa Keraton Soft</option>
+          </select>
+        </div>
+
+        <!-- Mode B: Upload File MP3 Sendiri -->
+        <div id="musicBoxUpload" class="hidden space-y-1.5">
+          <label class="flex items-center justify-center gap-2 p-3 rounded-xl border border-dashed border-sky-400 bg-sky-50/50 cursor-pointer hover:bg-sky-50 transition">
+            <span>🎵</span>
+            <span id="uploadedAudioLabel" class="text-xs font-bold text-sky-700">Pilih File Lagu (.mp3 / .m4a / .ogg)</span>
+            <input type="file" accept="audio/*" class="hidden" onchange="handleAudioUpload(event)">
+          </label>
+          <p class="text-[10px] text-slate-500">File lagu langsung diputar di layar iPhone sebelah saat undangan dibuka.</p>
+        </div>
+
+        <!-- Mode C: Link MP3 / Request Judul Lagu ke Admin -->
+        <div id="musicBoxUrl" class="hidden space-y-2">
+          <input id="inCustomSongTitle" type="text" placeholder="Judul Lagu Request (cth: Beautiful in White - Shane Filan)" oninput="syncToPhone()" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-xs">
+          <input id="inCustomAudioUrl" type="url" placeholder="Atau tempel link file .mp3 langsung (opsional)" oninput="syncToPhone()" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-xs text-sky-700">
+        </div>
+      </div>
+
+      <hr class="border-slate-100">
+
+      <!-- 6. Amplop Digital & Simulasi Nama Tamu -->
+      <div class="space-y-3 pb-10">
+        <label class="block text-xs font-extrabold uppercase tracking-wider text-sky-600">6. Amplop Digital &amp; Nama Tamu</label>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <span class="text-[11px] font-semibold text-slate-500">Bank / E-Wallet</span>
+            <input id="inBankName" type="text" value="Bank BCA" oninput="syncToPhone()" class="mt-1 w-full px-3 py-2 rounded-lg border border-slate-200 text-xs">
+          </div>
+          <div>
+            <span class="text-[11px] font-semibold text-slate-500">Nomor Rekening</span>
+            <input id="inBankAcc" type="text" value="7750912834" oninput="syncToPhone()" class="mt-1 w-full px-3 py-2 rounded-lg border border-slate-200 text-xs">
+          </div>
+        </div>
+        <div>
+          <span class="text-[11px] font-semibold text-slate-500">Simulasi Nama Tamu Undangan (?kpd=...)</span>
+          <input id="inGuestName" type="text" value="Bapak Budi" oninput="syncToPhone()" class="mt-1 w-full px-3 py-2 rounded-lg border border-sky-300 bg-sky-50/40 text-xs font-bold text-sky-700">
+          <p class="text-[10px] text-slate-500 mt-1">
+            Ingin buat link untuk 1.000+ tamu sekaligus? <a href="tamu.html" target="_blank" class="text-sky-600 font-bold underline">Buka Generator Ribuan Tamu &rarr;</a>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT SIDE: REALISTIC IPHONE PREVIEW -->
+    <div class="lg:col-span-6 xl:col-span-7 bg-gradient-to-br from-slate-100 via-slate-200/70 to-slate-100 flex flex-col items-center justify-center p-4 overflow-y-auto">
+      <div class="mb-2.5 flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/90 border border-slate-200 text-[11px] text-slate-600 shadow-sm">
+        <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+        <span>Mode Simulasi:</span>
+        <span id="liveUrlBadge" class="font-bold text-sky-600">undangakudong.com/dewi-ihab?kpd=Bapak%20Budi</span>
+      </div>
+
+      <!-- IPHONE 16 PRO MOCKUP CHASSIS -->
+      <div class="relative flex items-center justify-center">
+        <div class="hidden sm:block absolute -left-[5px] top-24 w-[3px] h-7 bg-zinc-700 rounded-l"></div>
+        <div class="hidden sm:block absolute -left-[5px] top-36 w-[3px] h-12 bg-zinc-700 rounded-l"></div>
+        <div class="hidden sm:block absolute -left-[5px] top-52 w-[3px] h-12 bg-zinc-700 rounded-l"></div>
+        <div class="hidden sm:block absolute -right-[5px] top-40 w-[3px] h-16 bg-zinc-700 rounded-r"></div>
+
+        <div class="iphone-chassis w-[320px] sm:w-[348px] h-[640px] rounded-[52px] p-[11px] relative flex flex-col">
+          <div class="w-full h-full bg-white rounded-[41px] overflow-hidden relative flex flex-col">
+            <!-- iOS Status Bar + Dynamic Island -->
+            <div class="h-10 bg-black text-white px-6 flex items-center justify-between text-[11px] font-semibold shrink-0 relative z-30 select-none">
+              <span>09:41</span>
+              <div class="w-24 h-6 bg-black rounded-full border border-zinc-800 flex items-center justify-end px-2 shadow-inner">
+                <span class="w-2.5 h-2.5 rounded-full bg-indigo-950 border border-indigo-700/50"></span>
+              </div>
+              <div class="flex items-center gap-1.5 text-[10px]">
+                <span>5G</span>
+                <div class="w-5 h-2.5 rounded-[3px] border border-white/60 p-[1px] flex items-center">
+                  <div class="w-full h-full bg-white rounded-[1px]"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Live Interactive Undangan Screen -->
+            <div class="flex-1 w-full relative bg-slate-900 overflow-hidden">
+              <iframe id="iphoneFrame" src="undangan.html?theme=vogue-editorial-noir&kpd=Bapak%20Budi&fromEditor=1" class="w-full h-full border-0"></iframe>
+            </div>
+
+            <!-- iOS Home Indicator Bar -->
+            <div class="h-5 bg-black flex items-center justify-center shrink-0">
+              <div class="w-28 h-1 rounded-full bg-white/80"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p class="mt-2.5 text-[11px] text-slate-500 text-center">
+        💡 Klik <strong>"Buka Undangan"</strong> di layar iPhone di atas untuk menguji desain sampul &amp; musik custom-mu.
+      </p>
+    </div>
+  </div>
+
+  <!-- MODAL METODE PEMESANAN & PEMBAYARAN -->
+  <div id="orderModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-4">
+      <div class="flex items-center justify-between">
+        <span class="px-3 py-1 rounded-full bg-amber-100 text-amber-800 text-[11px] font-bold">Langkah Terakhir: Pembayaran &amp; Aktivasi</span>
+        <button onclick="closeOrderModal()" class="text-slate-400 hover:text-slate-700 text-lg font-bold">&times;</button>
+      </div>
+
+      <h3 class="text-xl font-extrabold text-slate-900">Checkout Pesanan Undangan</h3>
+      <div id="orderSummaryBox" class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-xs space-y-1 text-slate-700"></div>
+
+      <div class="space-y-3">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1.5">Pilih Admin WhatsApp:</label>
+          <select id="inAdminNumber" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 text-xs font-semibold bg-white">
+            <option value="6285854573719">👩‍💼 Admin 1 — 0858-5457-3719</option>
+            <option value="6283891526603">👨‍💼 Admin 2 — 0838-9152-6603</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1.5">Pilih Metode Pembayaran:</label>
+          <select id="inPaymentMethod" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 text-xs font-semibold bg-white">
+            <option value="QRIS (Semua E-Wallet & Mobile Banking)">📱 QRIS (GoPay / OVO / Dana / ShopeePay / M-Banking)</option>
+            <option value="Transfer Bank BCA">🏦 Transfer Bank BCA</option>
+            <option value="Transfer Bank BRI">🏦 Transfer Bank BRI</option>
+            <option value="Transfer Bank Mandiri">🏦 Transfer Bank Mandiri</option>
+          </select>
+        </div>
+      </div>
+
+      <p class="text-[11px] text-slate-500 leading-relaxed">
+        Setelah klik tombol di bawah, pesanan otomatis dikirim ke <strong>WhatsApp Admin</strong> untuk mendapatkan nomor rekening / kode QRIS. Link resmi langsung diaktifkan setelah bukti transfer dikirim.
+      </p>
+
+      <div class="grid grid-cols-2 gap-2.5 pt-1">
+        <button onclick="closeOrderModal()" class="py-3 rounded-xl border border-slate-200 text-xs font-bold text-slate-600 hover:bg-slate-50">
+          Kembali Edit
+        </button>
+        <button onclick="sendOrderToWA()" class="py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-lg">
+          Kirim Order via WA &rarr;
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="themes.js"></script>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    let currentThemeId = params.get('theme') || 'vogue-editorial-noir';
+    let uploadedPhotos = { coverPhoto: '', bridePhoto: '', groomPhoto: '' };
+    let musicMode = 'preset';
+    let customAudioData = '';
+    let uploadedSongName = '';
+
+    function setMusicMode(mode) {
+      musicMode = mode;
+      ['preset', 'upload', 'url'].forEach(m => {
+        document.getElementById('musicBox' + m.charAt(0).toUpperCase() + m.slice(1)).classList.toggle('hidden', m !== mode);
+        const tab = document.getElementById('tabMusic' + m.charAt(0).toUpperCase() + m.slice(1));
+        if (m === mode) {
+          tab.classList.add('bg-white', 'text-sky-600', 'shadow-sm');
+          tab.classList.remove('text-slate-600');
+        } else {
+          tab.classList.remove('bg-white', 'text-sky-600', 'shadow-sm');
+          tab.classList.add('text-slate-600');
+        }
+      });
+      syncToPhone();
+    }
+
+    function handleAudioUpload(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      uploadedSongName = file.name;
+      document.getElementById('uploadedAudioLabel').textContent = '✅ ' + file.name;
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        customAudioData = evt.target.result;
+        syncToPhone();
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function renderThemeButtons() {
+      const container = document.getElementById('themeSelector');
+      container.innerHTML = UNDANGAKUDONG_THEMES.map(t => `
+        <button onclick="selectTheme('${t.id}')" class="p-2.5 rounded-xl border text-left transition flex items-center gap-2.5 ${t.id === currentThemeId ? 'border-sky-500 bg-sky-50 ring-2 ring-sky-200' : 'border-slate-200 hover:border-sky-300 bg-white'}">
+          <span class="w-5 h-5 rounded-full shrink-0 border border-black/15 shadow-inner" style="background:${t.palette.primary};"></span>
+          <div class="min-w-0">
+            <p class="text-[11px] font-bold truncate text-slate-800">${t.name}</p>
+            <p class="text-[9px] text-slate-400 truncate">${t.badge} • ${t.pricePromo}</p>
+          </div>
+        </button>
+      `).join('');
+
+      const activeT = UNDANGAKUDONG_THEMES.find(item => item.id === currentThemeId) || UNDANGAKUDONG_THEMES[0];
+      document.getElementById('selectedPriceTag').textContent = activeT.pricePromo;
+    }
+
+    function selectTheme(id) {
+      currentThemeId = id;
+      renderThemeButtons();
+      syncToPhone();
+    }
+
+    function handlePhotoUpload(e, key) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        uploadedPhotos[key] = evt.target.result;
+        syncToPhone();
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function getFormData() {
+      return {
+        theme: currentThemeId,
+        brideNick: document.getElementById('inBrideNick').value || 'Dewi',
+        groomNick: document.getElementById('inGroomNick').value || 'Ihab',
+        brideFull: document.getElementById('inBrideFull').value,
+        groomFull: document.getElementById('inGroomFull').value,
+        brideParents: document.getElementById('inBrideParents').value,
+        groomParents: document.getElementById('inGroomParents').value,
+        dateText: document.getElementById('inDateText').value,
+        timeText: document.getElementById('inTimeText').value,
+        venue: document.getElementById('inVenue').value,
+        mapsUrl: document.getElementById('inMapsUrl').value,
+        musicType: musicMode,
+        musicPreset: document.getElementById('inMusicPreset').value,
+        customAudioData: customAudioData,
+        customAudioUrl: document.getElementById('inCustomAudioUrl').value,
+        customSongTitle: document.getElementById('inCustomSongTitle').value || uploadedSongName,
+        bankName: document.getElementById('inBankName').value,
+        bankAcc: document.getElementById('inBankAcc').value,
+        guestName: document.getElementById('inGuestName').value || 'Bapak Budi',
+        ...uploadedPhotos
+      };
+    }
+
+    let syncTimer = null;
+    function syncToPhone() {
+      const d = getFormData();
+      const slug = `${d.brideNick.toLowerCase().replace(/\s+/g,'-')}-${d.groomNick.toLowerCase().replace(/\s+/g,'-')}`;
+      document.getElementById('liveUrlBadge').textContent = `undangakudong.com/${slug}?kpd=${encodeURIComponent(d.guestName)}`;
+
+      try {
+        localStorage.setItem('undangakudong_draft', JSON.stringify(d));
+      } catch (err) {
+        const lite = { ...d, coverPhoto: '', bridePhoto: '', groomPhoto: '', customAudioData: '' };
+        localStorage.setItem('undangakudong_draft', JSON.stringify(lite));
+      }
+
+      clearTimeout(syncTimer);
+      syncTimer = setTimeout(() => {
+        const frame = document.getElementById('iphoneFrame');
+        frame.src = `undangan.html?theme=${d.theme}&kpd=${encodeURIComponent(d.guestName)}&fromEditor=1`;
+      }, 250);
+    }
+
+    function openFullPreview() {
+      const d = getFormData();
+      window.open(`undangan.html?theme=${d.theme}&kpd=${encodeURIComponent(d.guestName)}&fromEditor=1`, '_blank');
+    }
+
+    function openOrderModal() {
+      const d = getFormData();
+      const t = UNDANGAKUDONG_THEMES.find(item => item.id === d.theme) || UNDANGAKUDONG_THEMES[0];
+      const songInfo = d.musicType === 'preset' ? `Preset (${d.musicPreset})` : `Custom (${d.customSongTitle || 'Lagu Pilihan'})`;
+      document.getElementById('orderSummaryBox').innerHTML = `
+        <p><strong>Mempelai:</strong> ${d.brideNick} &amp; ${d.groomNick}</p>
+        <p><strong>Konsep Desain:</strong> ${t.name} (${t.badge})</p>
+        <p><strong>Musik Latar:</strong> ${songInfo}</p>
+        <p><strong>Total Tagihan:</strong> <span class="font-extrabold text-emerald-700">${t.pricePromo}</span> (Aktif 1 Tahun + Unlimited Tamu)</p>
+      `;
+      const modal = document.getElementById('orderModal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeOrderModal() {
+      const modal = document.getElementById('orderModal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function sendOrderToWA() {
+      const d = getFormData();
+      const t = UNDANGAKUDONG_THEMES.find(item => item.id === d.theme) || UNDANGAKUDONG_THEMES[0];
+      const adminPhone = document.getElementById('inAdminNumber').value;
+      const pay = document.getElementById('inPaymentMethod').value;
+      const songInfo = d.musicType === 'preset' ? d.musicPreset : (d.customSongTitle || d.customAudioUrl || 'File MP3 Custom');
+      const msg = encodeURIComponent(
+        `Halo Admin UNDANG AKU DONG, saya ingin memesan undangan pernikahan:
+
+` +
+        `• Konsep Desain: ${t.name} (${t.pricePromo})
+` +
+        `• Metode Pembayaran: ${pay}
+` +
+        `• Mempelai Wanita: ${d.brideFull} (${d.brideParents})
+` +
+        `• Mempelai Pria: ${d.groomFull} (${d.groomParents})
+` +
+        `• Tanggal & Jam: ${d.dateText} | ${d.timeText}
+` +
+        `• Lokasi: ${d.venue}
+` +
+        `• Musik Latar: ${songInfo}
+` +
+        `• Rekening Amplop: ${d.bankName} - ${d.bankAcc}
+
+` +
+        `Mohon info nomor rekening/QRIS pembayarannya agar undangan saya segera diaktifkan.`
+      );
+      window.open(`https://wa.me/${adminPhone}?text=${msg}`, '_blank');
+    }
+
+    renderThemeButtons();
+    syncToPhone();
+  </script>
+</body>
+</html>

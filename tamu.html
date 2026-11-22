@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Generator Ribuan Tamu — UNDANG AKU DONG</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen">
+
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-30">
+    <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-2.5">
+        <div class="w-9 h-9 rounded-xl bg-sky-500 text-white flex items-center justify-center font-extrabold">U</div>
+        <span class="font-extrabold text-base text-slate-900">UNDANG AKU <span class="text-sky-500">DONG</span> <span class="text-slate-400 font-medium text-xs">| Generator Ribuan Tamu</span></span>
+      </a>
+      <a href="editor.html" class="px-4 py-2 rounded-lg bg-sky-500 text-white text-xs font-bold">Kembali ke Editor</a>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 py-8 grid lg:grid-cols-12 gap-6">
+    <!-- LEFT: INPUT PENGATURAN & DAFTAR RIBUAN NAMA -->
+    <div class="lg:col-span-5 bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-5 h-fit">
+      <div>
+        <span class="px-3 py-1 rounded-full bg-sky-100 text-sky-700 text-[11px] font-bold">Unlimited Tamu Undangan</span>
+        <h1 class="text-xl font-extrabold text-slate-900 mt-2">Buat Link &amp; Kata Pengantar WA Otomatis</h1>
+        <p class="text-xs text-slate-500 mt-1">Tempel daftar ribuan nama tamu dari Excel/Catatan (1 nama per baris). Sistem otomatis membuatkan link unik untuk setiap tamu.</p>
+      </div>
+
+      <div class="space-y-3">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">1. Link Utama Undanganmu</label>
+          <input id="baseUrlInput" type="text" value="https://undangakudong.com/dewi-ihab" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs font-semibold text-sky-700">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">2. Nama Mempelai (untuk Teks Pengantar)</label>
+          <input id="coupleInput" type="text" value="Dewi & Ihab" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs font-semibold">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">3. Daftar Nama Tamu (Pisahkan dengan Enter / Baris Baru)</label>
+          <textarea id="guestNamesInput" rows="8" placeholder="Contoh:&#10;Bapak Budi Santoso&#10;Ibu Siti Aminah & Keluarga&#10;Rekan Kerja Divisi Keuangan&#10;dr. Andi Pratama, Sp.PD" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs leading-relaxed">Bapak Budi Santoso
+Ibu Siti Aminah & Keluarga
+Rekan Kerja Divisi Keuangan
+dr. Andi Pratama, Sp.PD
+Keluarga Besar Bpk. H. Ahmad</textarea>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">4. Template Teks Pengantar WhatsApp</label>
+          <textarea id="waTemplateInput" rows="6" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs leading-relaxed">Kepada Yth.
+*[NAMA_TAMU]*
+
+Assalamu’alaikum Warahmatullahi Wabarakatuh.
+Tanpa mengurangi rasa hormat, perkenankan kami mengundang Bapak/Ibu/Saudara/i untuk hadir dalam acara pernikahan kami *[MEMPELAI]*.
+
+Info lengkap acara & lokasi silakan buka tautan berikut:
+[LINK_UNDANGAN]
+
+Merupakan suatu kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu. Terima kasih.</textarea>
+        </div>
+
+        <button onclick="generateGuests()" class="w-full py-3.5 rounded-xl bg-sky-500 hover:bg-sky-600 text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-sky-200 transition">
+          ⚡ Generate Daftar Link Tamu
+        </button>
+      </div>
+    </div>
+
+    <!-- RIGHT: HASIL DAFTAR LINK TAMU -->
+    <div class="lg:col-span-7 space-y-4">
+      <div class="bg-white p-4 rounded-2xl border border-slate-200 flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <p class="text-xs font-bold text-slate-900">Hasil Link Tamu Undangan</p>
+          <p id="totalGuestsBadge" class="text-[11px] text-slate-500">Total: 5 tamu siap disebar</p>
+        </div>
+        <button onclick="copyAllLinks()" class="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold">
+          📋 Salin Semua Link Sekaligus
+        </button>
+      </div>
+
+      <div id="guestResultList" class="space-y-3 max-h-[75vh] overflow-y-auto pr-1"></div>
+    </div>
+  </main>
+
+  <script>
+    let generatedItems = [];
+
+    function generateGuests() {
+      const base = document.getElementById('baseUrlInput').value.trim().replace(/\/$/, '');
+      const couple = document.getElementById('coupleInput').value.trim() || 'Kami';
+      const rawNames = document.getElementById('guestNamesInput').value.split('
+').map(s => s.trim()).filter(Boolean);
+      const tpl = document.getElementById('waTemplateInput').value;
+
+      generatedItems = rawNames.map((name, idx) => {
+        const sep = base.includes('?') ? '&' : '?';
+        const link = `${base}${sep}kpd=${encodeURIComponent(name)}`;
+        const message = tpl
+          .replace(/\[NAMA_TAMU\]/g, name)
+          .replace(/\[MEMPELAI\]/g, couple)
+          .replace(/\[LINK_UNDANGAN\]/g, link);
+        return { idx: idx + 1, name, link, message };
+      });
+
+      document.getElementById('totalGuestsBadge').textContent = `Total: ${generatedItems.length.toLocaleString('id-ID')} tamu siap disebar`;
+
+      const container = document.getElementById('guestResultList');
+      container.innerHTML = generatedItems.map((item, i) => `
+        <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div class="min-w-0">
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-0.5 rounded bg-slate-100 text-[10px] font-bold text-slate-600">#${item.idx}</span>
+              <p class="font-bold text-sm text-slate-900 truncate">${item.name}</p>
+            </div>
+            <p class="text-[11px] text-sky-600 truncate mt-1 font-mono">${item.link}</p>
+          </div>
+          <div class="flex items-center gap-2 shrink-0">
+            <button onclick="copyOneMessage(${i})" class="px-3 py-2 rounded-xl border border-slate-200 hover:bg-slate-50 text-xs font-bold text-slate-700">
+              Salin Teks
+            </button>
+            <a href="https://wa.me/?text=${encodeURIComponent(item.message)}" target="_blank" class="px-3.5 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold">
+              Kirim WA &nearr;
+            </a>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function copyOneMessage(i) {
+      navigator.clipboard.writeText(generatedItems[i].message);
+      alert(`Teks undangan WhatsApp untuk "${generatedItems[i].name}" berhasil disalin!`);
+    }
+
+    function copyAllLinks() {
+      const all = generatedItems.map(item => `${item.name}: ${item.link}`).join('
+');
+      navigator.clipboard.writeText(all);
+      alert(`Berhasil menyalin ${generatedItems.length} link tamu sekaligus!`);
+    }
+
+    generateGuests();
+  </script>
+</body>
+</html>
