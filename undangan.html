@@ -85,11 +85,14 @@
 
 
     /* =====================================================================
-       PPT SHARED-ELEMENT MORPH SYSTEM (ALL THEMES & LAYOUT ENGINES)
+       ULTRA-SMOOTH MORPH TRANSITION SYSTEM (ALL THEMES & LAYOUT ENGINES)
        ===================================================================== */
     .morph-card {
-      border-radius: 22px;
-      transition: transform 0.75s cubic-bezier(0.22, 1, 0.36, 1), border-radius 0.75s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.75s ease;
+      border-radius: 24px;
+      transition:
+        transform 1.15s cubic-bezier(0.16, 1, 0.3, 1),
+        border-radius 1.15s cubic-bezier(0.16, 1, 0.3, 1),
+        box-shadow 1.15s cubic-bezier(0.16, 1, 0.3, 1);
       will-change: transform, border-radius;
     }
     .morph-card:hover {
@@ -97,42 +100,48 @@
     }
 
     .morph-photo {
-      border-radius: 16px;
-      transition: transform 0.75s cubic-bezier(0.22, 1, 0.36, 1), border-radius 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+      border-radius: 18px;
+      transition:
+        transform 1.15s cubic-bezier(0.16, 1, 0.3, 1),
+        border-radius 1.15s cubic-bezier(0.16, 1, 0.3, 1);
       will-change: transform, border-radius;
     }
 
     .morph-element {
-      transition: transform 0.75s cubic-bezier(0.22, 1, 0.36, 1), border-radius 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+      transition:
+        transform 1.15s cubic-bezier(0.16, 1, 0.3, 1),
+        border-radius 1.15s cubic-bezier(0.16, 1, 0.3, 1);
       will-change: transform, border-radius;
     }
 
     .reveal {
       opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1), transform 1s cubic-bezier(0.22, 1, 0.36, 1);
+      transform: translateY(18px) scale(0.992);
+      transition:
+        opacity 1.1s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 1.35s cubic-bezier(0.16, 1, 0.3, 1);
       will-change: opacity, transform;
     }
     .reveal.visible {
       opacity: 1;
-      transform: translateY(0);
+      transform: translateY(0) scale(1);
     }
 
-    /* Elemen kloning shared-element yang benar-benar meluncur & berubah bentuk (morph) dari elemen asal ke elemen tujuan */
+    /* Elemen kloning shared-element yang meluncur sangat mulus & berubah ukuran/bentuk bertahap */
     .ppt-morph-clone {
       position: fixed;
       z-index: 48;
       pointer-events: none;
       object-fit: cover;
-      box-shadow: 0 22px 45px rgba(0, 0, 0, 0.28);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.2);
       transition:
-        left 0.95s cubic-bezier(0.22, 1, 0.36, 1),
-        top 0.95s cubic-bezier(0.22, 1, 0.36, 1),
-        width 0.95s cubic-bezier(0.22, 1, 0.36, 1),
-        height 0.95s cubic-bezier(0.22, 1, 0.36, 1),
-        border-radius 0.95s cubic-bezier(0.22, 1, 0.36, 1),
-        transform 0.95s cubic-bezier(0.22, 1, 0.36, 1),
-        opacity 0.55s ease;
+        left 1.35s cubic-bezier(0.16, 1, 0.3, 1),
+        top 1.35s cubic-bezier(0.16, 1, 0.3, 1),
+        width 1.35s cubic-bezier(0.16, 1, 0.3, 1),
+        height 1.35s cubic-bezier(0.16, 1, 0.3, 1),
+        border-radius 1.35s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 1.35s cubic-bezier(0.16, 1, 0.3, 1),
+        opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1);
       will-change: left, top, width, height, border-radius, transform, opacity;
     }
 
@@ -804,7 +813,7 @@
       requestAnimationFrame(step);
     }
 
-    function runSharedMorph(sourceEl, destEl, duration = 950) {
+    function runSharedMorph(sourceEl, destEl, duration = 1350) {
       if (!sourceEl || !destEl) return;
       const sRect = sourceEl.getBoundingClientRect();
       if (sRect.width < 12 || sRect.height < 12) return;
@@ -816,44 +825,46 @@
       clone.style.top = sRect.top + 'px';
       clone.style.width = sRect.width + 'px';
       clone.style.height = sRect.height + 'px';
-      clone.style.borderRadius = sStyle.borderRadius || '18px';
+      clone.style.borderRadius = sStyle.borderRadius || '20px';
       clone.style.background = sStyle.backgroundColor && sStyle.backgroundColor !== 'rgba(0, 0, 0, 0)'
         ? sStyle.backgroundColor
         : (p.bgCard || '#ffffff');
-      clone.style.border = `2px solid ${p.primary || '#D4AF37'}`;
 
       if (sourceEl.tagName === 'IMG') {
         const imgClone = document.createElement('img');
         imgClone.src = sourceEl.currentSrc || sourceEl.src;
         imgClone.className = 'w-full h-full object-cover ' + (imgFilter || '');
         imgClone.style.borderRadius = 'inherit';
-        clone.style.border = 'none';
         clone.style.background = 'transparent';
         clone.appendChild(imgClone);
       }
 
       document.body.appendChild(clone);
-      sourceEl.style.opacity = '0.25';
+      sourceEl.style.transition = 'opacity 0.45s ease';
+      sourceEl.style.opacity = '0.2';
+      destEl.style.opacity = '0.35';
 
       requestAnimationFrame(() => {
-        const dRect = destEl.getBoundingClientRect();
-        const dStyle = window.getComputedStyle(destEl);
-        clone.style.left = dRect.left + 'px';
-        clone.style.top = dRect.top + 'px';
-        clone.style.width = Math.max(dRect.width, 40) + 'px';
-        clone.style.height = Math.max(dRect.height, 40) + 'px';
-        clone.style.borderRadius = dStyle.borderRadius || '20px';
+        requestAnimationFrame(() => {
+          const dRect = destEl.getBoundingClientRect();
+          const dStyle = window.getComputedStyle(destEl);
+          clone.style.left = dRect.left + 'px';
+          clone.style.top = dRect.top + 'px';
+          clone.style.width = Math.max(dRect.width, 40) + 'px';
+          clone.style.height = Math.max(dRect.height, 40) + 'px';
+          clone.style.borderRadius = dStyle.borderRadius || '22px';
+          destEl.style.transition = 'opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1)';
+          destEl.style.opacity = '1';
+        });
       });
 
       setTimeout(() => {
         clone.style.opacity = '0';
         sourceEl.style.opacity = '';
-        destEl.style.transition = 'transform 0.5s cubic-bezier(0.22, 1, 0.36, 1)';
-        destEl.style.transform = 'scale(1.02)';
+        destEl.style.opacity = '';
         setTimeout(() => {
-          destEl.style.transform = '';
           clone.remove();
-        }, 420);
+        }, 650);
       }, duration);
     }
 
@@ -864,7 +875,7 @@
         return r.width > 20 && r.height > 20 && r.bottom > 0 && r.top < window.innerHeight;
       });
       if (imgs.length) return imgs[0];
-      const cards = Array.from(container.querySelectorAll('div, section')).filter(el => {
+      const cards = Array.from(container.querySelectorAll('.morph-card, .morph-element, div')).filter(el => {
         const r = el.getBoundingClientRect();
         return r.width > 60 && r.height > 60 && r.bottom > 0 && r.top < window.innerHeight;
       });
@@ -878,14 +889,13 @@
       if (target) {
         target.classList.add('visible');
         const fromEl = pickBestVisual(stream);
-        const toEl = target.querySelector('img, .morph-card, .morph-element') || target;
-        animateScrollTo(target, 900);
+        animateScrollTo(target, 1300);
         setTimeout(() => {
           const freshTo = target.querySelector('img, .morph-card, .morph-element') || target;
           if (fromEl && freshTo && fromEl !== freshTo) {
-            runSharedMorph(fromEl, freshTo, 850);
+            runSharedMorph(fromEl, freshTo, 1300);
           }
-        }, 260);
+        }, 220);
       }
     }
 
@@ -896,18 +906,18 @@
       const targetVisual = firstSec ? firstSec.querySelector('img, .morph-card, .morph-element') : null;
 
       if (coverVisual && targetVisual) {
-        runSharedMorph(coverVisual, targetVisual, 950);
+        runSharedMorph(coverVisual, targetVisual, 1350);
       }
 
-      cov.style.transition = 'transform 1.05s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1)';
+      cov.style.transition = 'transform 1.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.15s cubic-bezier(0.16, 1, 0.3, 1)';
       cov.style.transform = 'translateY(-100%)';
       cov.style.opacity = '0';
-      setTimeout(() => cov.style.display = 'none', 1100);
+      setTimeout(() => cov.style.display = 'none', 1400);
       startMusic();
       setTimeout(() => {
         triggerReveal();
         if (firstSec) firstSec.classList.add('visible');
-      }, 250);
+      }, 300);
     }
 
     function kirimUcapan() {
