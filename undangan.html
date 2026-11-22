@@ -194,12 +194,12 @@
       <div id="morphTransitionStage"></div>
       <div id="dynamicLayoutRoot"></div>
 
-      <!-- FLOATING AUTO-SCROLL & AUDIO BUTTONS -->
-      <button onclick="toggleAutoScroll()" id="autoScrollBtn" title="Auto Scroll Otomatis" class="fixed bottom-32 right-4 lg:right-[calc(50%-36rem+20px)] z-40 h-9 px-3 rounded-full bg-slate-900/90 text-white shadow-lg flex items-center gap-1.5 text-[10px] font-bold tracking-wide cursor-pointer">
+      <!-- FLOATING AUTO-SCROLL & AUDIO BUTTONS DI BAGIAN BAWAH -->
+      <button onclick="toggleAutoScroll()" id="autoScrollBtn" title="Auto Scroll Otomatis" class="fixed bottom-16 left-4 z-40 h-8 px-3 rounded-full bg-slate-900/90 text-white shadow-lg flex items-center gap-1.5 text-[10px] font-bold tracking-wide cursor-pointer">
         <span id="autoScrollIcon">▶</span>
         <span id="autoScrollLabel">Auto Scroll</span>
       </button>
-      <button onclick="toggleMusic()" id="musicBtn" title="Putar / Jeda Musik" class="fixed bottom-20 right-4 lg:right-[calc(50%-36rem+20px)] z-40 w-10 h-10 rounded-full bg-slate-900 text-white shadow-lg flex items-center justify-center text-sm spin-disc paused-disc">
+      <button onclick="toggleMusic()" id="musicBtn" title="Putar / Jeda Musik" class="fixed bottom-16 right-4 z-40 w-9 h-9 rounded-full bg-slate-900 text-white shadow-lg flex items-center justify-center text-sm spin-disc paused-disc">
         🎵
       </button>
 
@@ -822,22 +822,33 @@
     let autoScrollRaf = null;
     let isAutoScrolling = false;
     let lastScrollTs = null;
-    const AUTO_SCROLL_PX_PER_SEC = 28;
+    const AUTO_SCROLL_PX_PER_SEC = 38;
 
     function getScrollContainer() {
       const stream = document.getElementById('invitationStream');
-      return (window.innerWidth < 1024 || !stream) ? window : stream;
+      if (stream && stream.scrollHeight > stream.clientHeight + 20) {
+        return stream;
+      }
+      const docEl = document.scrollingElement || document.documentElement;
+      if (docEl && docEl.scrollHeight > window.innerHeight + 20) {
+        return window;
+      }
+      return stream || window;
     }
 
     function getCurrentScrollTop() {
       const c = getScrollContainer();
-      return c === window ? window.scrollY : c.scrollTop;
+      if (c === window) {
+        return window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
+      }
+      return c.scrollTop || 0;
     }
 
     function getMaxScrollTop() {
       const c = getScrollContainer();
       if (c === window) {
-        return Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+        const docEl = document.scrollingElement || document.documentElement;
+        return Math.max(0, docEl.scrollHeight - window.innerHeight);
       }
       return Math.max(0, c.scrollHeight - c.clientHeight);
     }
@@ -845,7 +856,9 @@
     function setScrollTop(val) {
       const c = getScrollContainer();
       if (c === window) {
-        window.scrollTo(0, val);
+        window.scrollTo({ top: val, behavior: 'auto' });
+        document.documentElement.scrollTop = val;
+        document.body.scrollTop = val;
       } else {
         c.scrollTop = val;
       }
@@ -970,7 +983,14 @@
         });
       }, { threshold: 0.12, rootMargin: '0px 0px -24px 0px' });
 
-      document.querySelectorAll('.fade-item').forEach(el => obs.observe(el));
+      const items = document.querySelectorAll('.fade-item');
+      items.forEach(el => {
+        const r = el.getBoundingClientRect();
+        if (r.top < window.innerHeight && r.bottom > 0) {
+          el.classList.add('in-view');
+        }
+        obs.observe(el);
+      });
     }
 
     if (urlParams.get('open') === '1') {
