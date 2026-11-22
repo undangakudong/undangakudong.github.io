@@ -85,46 +85,53 @@
 
 
     /* =====================================================================
-       SMOOTH SCROLL-REVEAL & EDITORIAL FADE TRANSITION (ALL THEMES)
+       AUTO-SCROLL + SMOOTH FADE IN/OUT ELEMENTS (ALL THEMES)
        ===================================================================== */
     .morph-card {
       border-radius: 20px;
       transition:
-        transform 0.9s cubic-bezier(0.22, 1, 0.36, 1),
-        box-shadow 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+        transform 1s cubic-bezier(0.22, 1, 0.36, 1),
+        box-shadow 1s cubic-bezier(0.22, 1, 0.36, 1);
       will-change: transform;
-    }
-    .morph-card:hover {
-      transform: translateY(-2px);
     }
 
     .morph-photo {
       border-radius: 14px;
       transition:
-        transform 0.95s cubic-bezier(0.22, 1, 0.36, 1),
-        opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+        transform 1s cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 1s cubic-bezier(0.22, 1, 0.36, 1);
       will-change: transform, opacity;
     }
 
     .morph-element {
       transition:
         transform 1s cubic-bezier(0.22, 1, 0.36, 1),
-        opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+        opacity 1s cubic-bezier(0.22, 1, 0.36, 1);
       will-change: transform, opacity;
     }
 
-    /* Transisi muncul/menghilang halus berbasis scroll seperti pada referensi video */
-    .reveal {
-      opacity: 0;
+    /* Elemen gambar & tulisan muncul & memudar lembut saat masuk/keluar area pandang */
+    .fade-item {
+      opacity: 0.04;
       transform: translateY(18px);
       transition:
-        opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
-        transform 0.95s cubic-bezier(0.22, 1, 0.36, 1);
+        opacity 1.2s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 1.3s cubic-bezier(0.22, 1, 0.36, 1);
       will-change: opacity, transform;
     }
-    .reveal.visible {
+    .fade-item.in-view {
       opacity: 1;
       transform: translateY(0);
+    }
+
+    .reveal {
+      opacity: 1;
+      transform: none;
+    }
+
+    #autoScrollPill {
+      backdrop-filter: blur(10px);
+      transition: transform 0.3s ease, opacity 0.3s ease, background-color 0.3s ease;
     }
 
     .ppt-morph-clone {
@@ -187,7 +194,11 @@
       <div id="morphTransitionStage"></div>
       <div id="dynamicLayoutRoot"></div>
 
-      <!-- FLOATING AUDIO BUTTON -->
+      <!-- FLOATING AUTO-SCROLL & AUDIO BUTTONS -->
+      <button onclick="toggleAutoScroll()" id="autoScrollBtn" title="Auto Scroll Otomatis" class="fixed bottom-32 right-4 lg:right-[calc(50%-36rem+20px)] z-40 h-9 px-3 rounded-full bg-slate-900/90 text-white shadow-lg flex items-center gap-1.5 text-[10px] font-bold tracking-wide cursor-pointer">
+        <span id="autoScrollIcon">▶</span>
+        <span id="autoScrollLabel">Auto Scroll</span>
+      </button>
       <button onclick="toggleMusic()" id="musicBtn" title="Putar / Jeda Musik" class="fixed bottom-20 right-4 lg:right-[calc(50%-36rem+20px)] z-40 w-10 h-10 rounded-full bg-slate-900 text-white shadow-lg flex items-center justify-center text-sm spin-disc paused-disc">
         🎵
       </button>
@@ -808,18 +819,124 @@
       }
     }
 
+    let autoScrollRaf = null;
+    let isAutoScrolling = false;
+    let lastScrollTs = null;
+    const AUTO_SCROLL_PX_PER_SEC = 28;
+
+    function getScrollContainer() {
+      const stream = document.getElementById('invitationStream');
+      return (window.innerWidth < 1024 || !stream) ? window : stream;
+    }
+
+    function getCurrentScrollTop() {
+      const c = getScrollContainer();
+      return c === window ? window.scrollY : c.scrollTop;
+    }
+
+    function getMaxScrollTop() {
+      const c = getScrollContainer();
+      if (c === window) {
+        return Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+      }
+      return Math.max(0, c.scrollHeight - c.clientHeight);
+    }
+
+    function setScrollTop(val) {
+      const c = getScrollContainer();
+      if (c === window) {
+        window.scrollTo(0, val);
+      } else {
+        c.scrollTop = val;
+      }
+    }
+
+    function updateAutoScrollUI() {
+      const btn = document.getElementById('autoScrollBtn');
+      const icon = document.getElementById('autoScrollIcon');
+      const label = document.getElementById('autoScrollLabel');
+      if (!btn || !icon || !label) return;
+      if (isAutoScrolling) {
+        icon.textContent = '❚❚';
+        label.textContent = 'Jeda Scroll';
+        btn.style.background = p.primary || '#0f172a';
+      } else {
+        icon.textContent = '▶';
+        label.textContent = 'Auto Scroll';
+        btn.style.background = 'rgba(15, 23, 42, 0.9)';
+      }
+    }
+
+    function autoScrollStep(ts) {
+      if (!isAutoScrolling) return;
+      if (!lastScrollTs) lastScrollTs = ts;
+      const dt = Math.min((ts - lastScrollTs) / 1000, 0.1);
+      lastScrollTs = ts;
+
+      const current = getCurrentScrollTop();
+      const maxScroll = getMaxScrollTop();
+      if (current < maxScroll - 1) {
+        setScrollTop(Math.min(maxScroll, current + AUTO_SCROLL_PX_PER_SEC * dt));
+        autoScrollRaf = requestAnimationFrame(autoScrollStep);
+      } else {
+        stopAutoScroll();
+      }
+    }
+
+    function startAutoScroll() {
+      if (isAutoScrolling) return;
+      isAutoScrolling = true;
+      lastScrollTs = null;
+      updateAutoScrollUI();
+      autoScrollRaf = requestAnimationFrame(autoScrollStep);
+    }
+
+    function stopAutoScroll() {
+      isAutoScrolling = false;
+      lastScrollTs = null;
+      if (autoScrollRaf) {
+        cancelAnimationFrame(autoScrollRaf);
+        autoScrollRaf = null;
+      }
+      updateAutoScrollUI();
+    }
+
+    function toggleAutoScroll() {
+      if (isAutoScrolling) {
+        stopAutoScroll();
+      } else {
+        startAutoScroll();
+      }
+    }
+
+    // Hentikan auto-scroll otomatis jika pengguna menyentuh/menggulir secara manual agar tidak bentrok
+    ['wheel', 'touchstart'].forEach(evtName => {
+      window.addEventListener(evtName, () => {
+        if (isAutoScrolling) stopAutoScroll();
+      }, { passive: true });
+      const streamEl = document.getElementById('invitationStream');
+      if (streamEl) {
+        streamEl.addEventListener(evtName, () => {
+          if (isAutoScrolling) stopAutoScroll();
+        }, { passive: true });
+      }
+    });
+
     function bukaUndangan() {
       const cov = document.getElementById('coverOverlay');
-      const firstSec = document.getElementById('sec-mempelai');
-      cov.style.transition = 'transform 1.1s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1)';
-      cov.style.transform = 'translateY(-100%)';
-      cov.style.opacity = '0';
-      setTimeout(() => cov.style.display = 'none', 1150);
+      if (cov) {
+        cov.style.transition = 'transform 1.15s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.95s cubic-bezier(0.22, 1, 0.36, 1)';
+        cov.style.transform = 'translateY(-100%)';
+        cov.style.opacity = '0';
+        setTimeout(() => {
+          cov.style.display = 'none';
+        }, 1200);
+      }
       startMusic();
       setTimeout(() => {
         triggerReveal();
-        if (firstSec) firstSec.classList.add('visible');
-      }, 250);
+        startAutoScroll();
+      }, 400);
     }
 
     function kirimUcapan() {
@@ -827,7 +944,7 @@
       const m = document.getElementById('wishText').value.trim();
       if (!m) return;
       document.getElementById('wishList').insertAdjacentHTML('afterbegin', `
-        <div class="p-3 rounded-xl border text-xs" style="border-color:${p.border};">
+        <div class="p-3 rounded-xl border text-xs fade-item in-view" style="border-color:${p.border};">
           <p class="font-bold">${s}</p>
           <p class="opacity-80 mt-0.5">${m}</p>
         </div>
@@ -836,21 +953,30 @@
     }
 
     function triggerReveal() {
+      const targets = document.querySelectorAll('#dynamicLayoutRoot img, #dynamicLayoutRoot h1, #dynamicLayoutRoot h2, #dynamicLayoutRoot h3, #dynamicLayoutRoot p, #dynamicLayoutRoot a, #dynamicLayoutRoot button, #dynamicLayoutRoot .morph-card');
+      targets.forEach(el => {
+        if (!el.closest('nav')) {
+          el.classList.add('fade-item');
+        }
+      });
+
       const obs = new IntersectionObserver(entries => {
-        entries.forEach((e, idx) => {
+        entries.forEach(e => {
           if (e.isIntersecting) {
-            setTimeout(() => {
-              e.target.classList.add('visible');
-            }, idx * 90);
-            obs.unobserve(e.target);
+            e.target.classList.add('in-view');
+          } else {
+            e.target.classList.remove('in-view');
           }
         });
-      }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
-      document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+      }, { threshold: 0.12, rootMargin: '0px 0px -24px 0px' });
+
+      document.querySelectorAll('.fade-item').forEach(el => obs.observe(el));
     }
+
     if (urlParams.get('open') === '1') {
       const cov = document.getElementById('coverOverlay');
       if (cov) cov.style.display = 'none';
+      setTimeout(() => startAutoScroll(), 400);
     }
     triggerReveal();
   </script>
