@@ -56,25 +56,70 @@
 
       <hr class="border-slate-100">
 
-      <!-- 2. Foto Sampul & Mempelai -->
+      <!-- 2. Foto Sampul, Mempelai & Galeri -->
       <div class="space-y-3">
-        <label class="block text-xs font-extrabold uppercase tracking-wider text-sky-600">2. Ganti Foto Prewedding (Opsional)</label>
+        <div class="flex items-center justify-between">
+          <label class="block text-xs font-extrabold uppercase tracking-wider text-sky-600">2. Ganti Foto Sampul, Mempelai &amp; Galeri</label>
+          <button type="button" onclick="resetAllPhotos()" class="text-[10px] font-bold text-rose-500 hover:underline">Reset Foto</button>
+        </div>
+
+        <!-- Foto Utama: Sampul, Wanita, Pria -->
         <div class="grid grid-cols-3 gap-2">
-          <label class="cursor-pointer p-2.5 rounded-xl border border-dashed border-slate-300 hover:border-sky-500 text-center bg-slate-50/70 transition">
-            <span class="block text-base">🖼️</span>
-            <span class="block text-[10px] font-bold text-slate-700 mt-0.5">Foto Sampul</span>
+          <label id="box_coverPhoto" class="cursor-pointer p-2 rounded-xl border border-dashed border-slate-300 hover:border-sky-500 text-center bg-slate-50/70 transition relative overflow-hidden">
+            <img id="prev_coverPhoto" class="hidden w-10 h-10 mx-auto rounded-lg object-cover mb-1 border border-slate-200" alt="Sampul">
+            <span id="icon_coverPhoto" class="block text-base">🖼️</span>
+            <span id="lbl_coverPhoto" class="block text-[10px] font-bold text-slate-700 mt-0.5">Foto Sampul</span>
             <input type="file" accept="image/*" class="hidden" onchange="handlePhotoUpload(event, 'coverPhoto')">
           </label>
-          <label class="cursor-pointer p-2.5 rounded-xl border border-dashed border-slate-300 hover:border-sky-500 text-center bg-slate-50/70 transition">
-            <span class="block text-base">👰</span>
-            <span class="block text-[10px] font-bold text-slate-700 mt-0.5">Foto Wanita</span>
+          <label id="box_bridePhoto" class="cursor-pointer p-2 rounded-xl border border-dashed border-slate-300 hover:border-sky-500 text-center bg-slate-50/70 transition relative overflow-hidden">
+            <img id="prev_bridePhoto" class="hidden w-10 h-10 mx-auto rounded-lg object-cover mb-1 border border-slate-200" alt="Wanita">
+            <span id="icon_bridePhoto" class="block text-base">👰</span>
+            <span id="lbl_bridePhoto" class="block text-[10px] font-bold text-slate-700 mt-0.5">Foto Wanita</span>
             <input type="file" accept="image/*" class="hidden" onchange="handlePhotoUpload(event, 'bridePhoto')">
           </label>
-          <label class="cursor-pointer p-2.5 rounded-xl border border-dashed border-slate-300 hover:border-sky-500 text-center bg-slate-50/70 transition">
-            <span class="block text-base">🤵</span>
-            <span class="block text-[10px] font-bold text-slate-700 mt-0.5">Foto Pria</span>
+          <label id="box_groomPhoto" class="cursor-pointer p-2 rounded-xl border border-dashed border-slate-300 hover:border-sky-500 text-center bg-slate-50/70 transition relative overflow-hidden">
+            <img id="prev_groomPhoto" class="hidden w-10 h-10 mx-auto rounded-lg object-cover mb-1 border border-slate-200" alt="Pria">
+            <span id="icon_groomPhoto" class="block text-base">🤵</span>
+            <span id="lbl_groomPhoto" class="block text-[10px] font-bold text-slate-700 mt-0.5">Foto Pria</span>
             <input type="file" accept="image/*" class="hidden" onchange="handlePhotoUpload(event, 'groomPhoto')">
           </label>
+        </div>
+
+        <!-- 4 Slot Foto Galeri Prewedding -->
+        <div class="pt-1">
+          <div class="flex items-center justify-between mb-1.5">
+            <span class="text-[11px] font-semibold text-slate-500">Foto Galeri Momen (4 Slot):</span>
+            <label class="cursor-pointer text-[10px] font-bold text-sky-600 hover:underline">
+              + Pilih Banyak Sekaligus
+              <input type="file" accept="image/*" multiple class="hidden" onchange="handleBulkGalleryUpload(event)">
+            </label>
+          </div>
+          <div class="grid grid-cols-4 gap-2">
+            <label id="box_gallery1" class="cursor-pointer p-2 rounded-xl border border-dashed border-slate-300 hover:border-sky-500 text-center bg-slate-50/70 transition">
+              <img id="prev_gallery1" class="hidden w-9 h-9 mx-auto rounded-lg object-cover mb-1 border border-slate-200" alt="G1">
+              <span id="icon_gallery1" class="block text-sm">📸</span>
+              <span id="lbl_gallery1" class="block text-[9px] font-bold text-slate-700">Galeri 1</span>
+              <input type="file" accept="image/*" class="hidden" onchange="handlePhotoUpload(event, 'gallery1')">
+            </label>
+            <label id="box_gallery2" class="cursor-pointer p-2 rounded-xl border border-dashed border-slate-300 hover:border-sky-500 text-center bg-slate-50/70 transition">
+              <img id="prev_gallery2" class="hidden w-9 h-9 mx-auto rounded-lg object-cover mb-1 border border-slate-200" alt="G2">
+              <span id="icon_gallery2" class="block text-sm">📸</span>
+              <span id="lbl_gallery2" class="block text-[9px] font-bold text-slate-700">Galeri 2</span>
+              <input type="file" accept="image/*" class="hidden" onchange="handlePhotoUpload(event, 'gallery2')">
+            </label>
+            <label id="box_gallery3" class="cursor-pointer p-2 rounded-xl border border-dashed border-slate-300 hover:border-sky-500 text-center bg-slate-50/70 transition">
+              <img id="prev_gallery3" class="hidden w-9 h-9 mx-auto rounded-lg object-cover mb-1 border border-slate-200" alt="G3">
+              <span id="icon_gallery3" class="block text-sm">📸</span>
+              <span id="lbl_gallery3" class="block text-[9px] font-bold text-slate-700">Galeri 3</span>
+              <input type="file" accept="image/*" class="hidden" onchange="handlePhotoUpload(event, 'gallery3')">
+            </label>
+            <label id="box_gallery4" class="cursor-pointer p-2 rounded-xl border border-dashed border-slate-300 hover:border-sky-500 text-center bg-slate-50/70 transition">
+              <img id="prev_gallery4" class="hidden w-9 h-9 mx-auto rounded-lg object-cover mb-1 border border-slate-200" alt="G4">
+              <span id="icon_gallery4" class="block text-sm">📸</span>
+              <span id="lbl_gallery4" class="block text-[9px] font-bold text-slate-700">Galeri 4</span>
+              <input type="file" accept="image/*" class="hidden" onchange="handlePhotoUpload(event, 'gallery4')">
+            </label>
+          </div>
         </div>
       </div>
 
@@ -300,7 +345,15 @@
   <script>
     const params = new URLSearchParams(window.location.search);
     let currentThemeId = params.get('theme') || 'vogue-editorial-noir';
-    let uploadedPhotos = { coverPhoto: '', bridePhoto: '', groomPhoto: '' };
+    let uploadedPhotos = {
+      coverPhoto: '',
+      bridePhoto: '',
+      groomPhoto: '',
+      gallery1: '',
+      gallery2: '',
+      gallery3: '',
+      gallery4: ''
+    };
     let musicMode = 'preset';
     let customAudioData = '';
     let uploadedSongName = '';
@@ -356,15 +409,83 @@
       syncToPhone();
     }
 
-    function handlePhotoUpload(e, key) {
+    function compressImageFile(file, maxDim = 900, quality = 0.78) {
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+          const img = new Image();
+          img.onload = function() {
+            let w = img.width;
+            let h = img.height;
+            if (w > maxDim || h > maxDim) {
+              if (w > h) {
+                h = Math.round((h * maxDim) / w);
+                w = maxDim;
+              } else {
+                w = Math.round((w * maxDim) / h);
+                h = maxDim;
+              }
+            }
+            const canvas = document.createElement('canvas');
+            canvas.width = w;
+            canvas.height = h;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, w, h);
+            resolve(canvas.toDataURL('image/jpeg', quality));
+          };
+          img.src = evt.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function updatePhotoSlotUI(key, dataUrl) {
+      const prev = document.getElementById('prev_' + key);
+      const icon = document.getElementById('icon_' + key);
+      const box = document.getElementById('box_' + key);
+      if (!prev || !icon || !box) return;
+      if (dataUrl) {
+        prev.src = dataUrl;
+        prev.classList.remove('hidden');
+        icon.classList.add('hidden');
+        box.classList.add('border-emerald-500', 'bg-emerald-50/40');
+        box.classList.remove('border-slate-300');
+      } else {
+        prev.src = '';
+        prev.classList.add('hidden');
+        icon.classList.remove('hidden');
+        box.classList.remove('border-emerald-500', 'bg-emerald-50/40');
+        box.classList.add('border-slate-300');
+      }
+    }
+
+    async function handlePhotoUpload(e, key) {
       const file = e.target.files[0];
       if (!file) return;
-      const reader = new FileReader();
-      reader.onload = function(evt) {
-        uploadedPhotos[key] = evt.target.result;
-        syncToPhone();
-      };
-      reader.readAsDataURL(file);
+      const compressed = await compressImageFile(file, 900, 0.78);
+      uploadedPhotos[key] = compressed;
+      updatePhotoSlotUI(key, compressed);
+      syncToPhone(true);
+    }
+
+    async function handleBulkGalleryUpload(e) {
+      const files = Array.from(e.target.files || []).slice(0, 4);
+      if (!files.length) return;
+      for (let i = 0; i < files.length; i++) {
+        const key = 'gallery' + (i + 1);
+        const compressed = await compressImageFile(files[i], 850, 0.76);
+        uploadedPhotos[key] = compressed;
+        updatePhotoSlotUI(key, compressed);
+      }
+      syncToPhone(true);
+    }
+
+    function resetAllPhotos() {
+      Object.keys(uploadedPhotos).forEach(k => {
+        uploadedPhotos[k] = '';
+        updatePhotoSlotUI(k, '');
+      });
+      syncToPhone(true);
     }
 
     function getFormData() {
@@ -393,23 +514,27 @@
     }
 
     let syncTimer = null;
-    function syncToPhone() {
+    function syncToPhone(skipCover = false) {
       const d = getFormData();
-      const slug = `${d.brideNick.toLowerCase().replace(/\s+/g,'-')}-${d.groomNick.toLowerCase().replace(/\s+/g,'-')}`;
-      document.getElementById('liveUrlBadge').textContent = `undangakudong.com/${slug}?kpd=${encodeURIComponent(d.guestName)}`;
+      document.getElementById('liveUrlBadge').textContent = `undangakudong.github.io/undangan.html?theme=${d.theme}&kpd=${encodeURIComponent(d.guestName)}`;
 
       try {
         localStorage.setItem('undangakudong_draft', JSON.stringify(d));
       } catch (err) {
-        const lite = { ...d, coverPhoto: '', bridePhoto: '', groomPhoto: '', customAudioData: '' };
-        localStorage.setItem('undangakudong_draft', JSON.stringify(lite));
+        const lite = { ...d, customAudioData: '' };
+        try {
+          localStorage.setItem('undangakudong_draft', JSON.stringify(lite));
+        } catch (err2) {
+          console.warn('Storage penuh:', err2);
+        }
       }
 
       clearTimeout(syncTimer);
       syncTimer = setTimeout(() => {
         const frame = document.getElementById('iphoneFrame');
-        frame.src = `undangan.html?theme=${d.theme}&kpd=${encodeURIComponent(d.guestName)}&fromEditor=1`;
-      }, 250);
+        const extra = skipCover ? '&open=1' : '';
+        frame.src = `undangan.html?theme=${d.theme}&kpd=${encodeURIComponent(d.guestName)}&fromEditor=1${extra}&t=${Date.now()}`;
+      }, 200);
     }
 
     function openFullPreview() {
