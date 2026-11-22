@@ -110,19 +110,19 @@
       will-change: transform, opacity;
     }
 
-    /* Elemen gambar & tulisan muncul & memudar lembut, tajam (tanpa blur) */
+    /* Efek muncul & menghilang super halus (gentle glide + soft scale, tanpa blur) */
     .fade-item {
-      opacity: 0.08;
-      transform: translateY(14px);
+      opacity: 0.05;
+      transform: translate3d(0, 18px, 0) scale(0.988);
       filter: none !important;
       transition:
-        opacity 1.45s cubic-bezier(0.22, 1, 0.36, 1),
-        transform 1.55s cubic-bezier(0.22, 1, 0.36, 1);
+        opacity 2.1s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 2.25s cubic-bezier(0.16, 1, 0.3, 1);
       will-change: opacity, transform;
     }
     .fade-item.in-view {
       opacity: 1;
-      transform: translateY(0);
+      transform: translate3d(0, 0, 0) scale(1);
       filter: none !important;
     }
 
@@ -987,10 +987,12 @@
       }, { threshold: 0.06, rootMargin: '0px 0px -10px 0px' });
 
       const items = document.querySelectorAll('.fade-item');
-      items.forEach(el => {
+      items.forEach((el, idx) => {
         el.style.filter = 'none';
+        const staggerMs = (idx % 4) * 140;
+        el.style.transitionDelay = `${staggerMs}ms`;
         const r = el.getBoundingClientRect();
-        if (r.top < window.innerHeight * 0.95 && r.bottom > 0) {
+        if (r.top < window.innerHeight * 0.92 && r.bottom > 0) {
           el.classList.add('in-view');
         }
         obs.observe(el);
