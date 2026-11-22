@@ -85,64 +85,50 @@
 
 
     /* =====================================================================
-       ULTRA-SMOOTH MORPH TRANSITION SYSTEM (ALL THEMES & LAYOUT ENGINES)
+       SMOOTH SCROLL-REVEAL & EDITORIAL FADE TRANSITION (ALL THEMES)
        ===================================================================== */
     .morph-card {
-      border-radius: 24px;
+      border-radius: 20px;
       transition:
-        transform 1.15s cubic-bezier(0.16, 1, 0.3, 1),
-        border-radius 1.15s cubic-bezier(0.16, 1, 0.3, 1),
-        box-shadow 1.15s cubic-bezier(0.16, 1, 0.3, 1);
-      will-change: transform, border-radius;
+        transform 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+        box-shadow 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: transform;
     }
     .morph-card:hover {
-      transform: translateY(-3px);
+      transform: translateY(-2px);
     }
 
     .morph-photo {
-      border-radius: 18px;
+      border-radius: 14px;
       transition:
-        transform 1.15s cubic-bezier(0.16, 1, 0.3, 1),
-        border-radius 1.15s cubic-bezier(0.16, 1, 0.3, 1);
-      will-change: transform, border-radius;
+        transform 0.95s cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: transform, opacity;
     }
 
     .morph-element {
       transition:
-        transform 1.15s cubic-bezier(0.16, 1, 0.3, 1),
-        border-radius 1.15s cubic-bezier(0.16, 1, 0.3, 1);
-      will-change: transform, border-radius;
+        transform 1s cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: transform, opacity;
     }
 
+    /* Transisi muncul/menghilang halus berbasis scroll seperti pada referensi video */
     .reveal {
       opacity: 0;
-      transform: translateY(18px) scale(0.992);
+      transform: translateY(18px);
       transition:
-        opacity 1.1s cubic-bezier(0.16, 1, 0.3, 1),
-        transform 1.35s cubic-bezier(0.16, 1, 0.3, 1);
+        opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.95s cubic-bezier(0.22, 1, 0.36, 1);
       will-change: opacity, transform;
     }
     .reveal.visible {
       opacity: 1;
-      transform: translateY(0) scale(1);
+      transform: translateY(0);
     }
 
-    /* Elemen kloning shared-element yang meluncur sangat mulus & berubah ukuran/bentuk bertahap */
     .ppt-morph-clone {
-      position: fixed;
-      z-index: 48;
-      pointer-events: none;
-      object-fit: cover;
-      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.2);
-      transition:
-        left 1.35s cubic-bezier(0.16, 1, 0.3, 1),
-        top 1.35s cubic-bezier(0.16, 1, 0.3, 1),
-        width 1.35s cubic-bezier(0.16, 1, 0.3, 1),
-        height 1.35s cubic-bezier(0.16, 1, 0.3, 1),
-        border-radius 1.35s cubic-bezier(0.16, 1, 0.3, 1),
-        transform 1.35s cubic-bezier(0.16, 1, 0.3, 1),
-        opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-      will-change: left, top, width, height, border-radius, transform, opacity;
+      display: none !important;
     }
 
     #morphTransitionStage {
@@ -813,111 +799,27 @@
       requestAnimationFrame(step);
     }
 
-    function runSharedMorph(sourceEl, destEl, duration = 1350) {
-      if (!sourceEl || !destEl) return;
-      const sRect = sourceEl.getBoundingClientRect();
-      if (sRect.width < 12 || sRect.height < 12) return;
-
-      const sStyle = window.getComputedStyle(sourceEl);
-      const clone = document.createElement('div');
-      clone.className = 'ppt-morph-clone';
-      clone.style.left = sRect.left + 'px';
-      clone.style.top = sRect.top + 'px';
-      clone.style.width = sRect.width + 'px';
-      clone.style.height = sRect.height + 'px';
-      clone.style.borderRadius = sStyle.borderRadius || '20px';
-      clone.style.background = sStyle.backgroundColor && sStyle.backgroundColor !== 'rgba(0, 0, 0, 0)'
-        ? sStyle.backgroundColor
-        : (p.bgCard || '#ffffff');
-
-      if (sourceEl.tagName === 'IMG') {
-        const imgClone = document.createElement('img');
-        imgClone.src = sourceEl.currentSrc || sourceEl.src;
-        imgClone.className = 'w-full h-full object-cover ' + (imgFilter || '');
-        imgClone.style.borderRadius = 'inherit';
-        clone.style.background = 'transparent';
-        clone.appendChild(imgClone);
-      }
-
-      document.body.appendChild(clone);
-      sourceEl.style.transition = 'opacity 0.45s ease';
-      sourceEl.style.opacity = '0.2';
-      destEl.style.opacity = '0.35';
-
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          const dRect = destEl.getBoundingClientRect();
-          const dStyle = window.getComputedStyle(destEl);
-          clone.style.left = dRect.left + 'px';
-          clone.style.top = dRect.top + 'px';
-          clone.style.width = Math.max(dRect.width, 40) + 'px';
-          clone.style.height = Math.max(dRect.height, 40) + 'px';
-          clone.style.borderRadius = dStyle.borderRadius || '22px';
-          destEl.style.transition = 'opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1)';
-          destEl.style.opacity = '1';
-        });
-      });
-
-      setTimeout(() => {
-        clone.style.opacity = '0';
-        sourceEl.style.opacity = '';
-        destEl.style.opacity = '';
-        setTimeout(() => {
-          clone.remove();
-        }, 650);
-      }, duration);
-    }
-
-    function pickBestVisual(container) {
-      if (!container) return null;
-      const imgs = Array.from(container.querySelectorAll('img')).filter(im => {
-        const r = im.getBoundingClientRect();
-        return r.width > 20 && r.height > 20 && r.bottom > 0 && r.top < window.innerHeight;
-      });
-      if (imgs.length) return imgs[0];
-      const cards = Array.from(container.querySelectorAll('.morph-card, .morph-element, div')).filter(el => {
-        const r = el.getBoundingClientRect();
-        return r.width > 60 && r.height > 60 && r.bottom > 0 && r.top < window.innerHeight;
-      });
-      return cards[0] || null;
-    }
-
     function smoothGlideTo(sectionId, ev) {
       if (ev) ev.preventDefault();
       const target = document.getElementById(sectionId);
-      const stream = document.getElementById('invitationStream');
       if (target) {
         target.classList.add('visible');
-        const fromEl = pickBestVisual(stream);
-        animateScrollTo(target, 1300);
-        setTimeout(() => {
-          const freshTo = target.querySelector('img, .morph-card, .morph-element') || target;
-          if (fromEl && freshTo && fromEl !== freshTo) {
-            runSharedMorph(fromEl, freshTo, 1300);
-          }
-        }, 220);
+        animateScrollTo(target, 1150);
       }
     }
 
     function bukaUndangan() {
       const cov = document.getElementById('coverOverlay');
       const firstSec = document.getElementById('sec-mempelai');
-      const coverVisual = cov ? cov.querySelector('img, .morph-element, button') : null;
-      const targetVisual = firstSec ? firstSec.querySelector('img, .morph-card, .morph-element') : null;
-
-      if (coverVisual && targetVisual) {
-        runSharedMorph(coverVisual, targetVisual, 1350);
-      }
-
-      cov.style.transition = 'transform 1.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.15s cubic-bezier(0.16, 1, 0.3, 1)';
+      cov.style.transition = 'transform 1.1s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1)';
       cov.style.transform = 'translateY(-100%)';
       cov.style.opacity = '0';
-      setTimeout(() => cov.style.display = 'none', 1400);
+      setTimeout(() => cov.style.display = 'none', 1150);
       startMusic();
       setTimeout(() => {
         triggerReveal();
         if (firstSec) firstSec.classList.add('visible');
-      }, 300);
+      }, 250);
     }
 
     function kirimUcapan() {
